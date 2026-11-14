@@ -1,0 +1,32 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+        python-version: ["3.12"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Concept replay
+        run: python -m cad_agent_showcase demo concept --replay --out demo-output/concept
+      - name: Drawing replay
+        run: python -m cad_agent_showcase demo drawing --replay --out demo-output/drawing
+      - name: Confirmation mutation replay
+        run: python -m cad_agent_showcase demo confirmation-mutation --replay --out demo-output/mutation
+      - name: Unit tests
+        run: python -m unittest discover -s tests -t .
