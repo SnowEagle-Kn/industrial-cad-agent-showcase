@@ -1,0 +1,38 @@
+{
+  "kind": "concept_parameters",
+  "fixture_id": "concept-sensor-bracket-demo",
+  "source": "user",
+  "parameters": [
+    {
+      "parameter_id": "envelope_length_mm",
+      "value": 90,
+      "unit": "mm"
+    },
+    {
+      "parameter_id": "envelope_width_mm",
+      "value": 70,
+      "unit": "mm"
+    },
+    {
+      "parameter_id": "plate_thickness_mm",
+      "value": 6,
+      "unit": "mm"
+    },
+    {
+      "parameter_id": "hole_pitch_mm",
+      "value": 50,
+      "unit": "mm"
+    },
+    {
+      "parameter_id": "material",
+      "value": "AL-6061-T6 (DEMO)",
+      "unit": null
+    },
+    {
+      "parameter_id": "load_n",
+      "value": 5,
+      "unit": "N"
+    }
+  ],
+  "note": "Synthetic demo parameters supplied in the replay narrative; not engineering data."
+}

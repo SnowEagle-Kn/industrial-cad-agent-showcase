@@ -1,0 +1,11 @@
+{
+  "schema": "cad_agent_showcase.confirmation_event.v1",
+  "event_id": "EVT-DEMO-CONCEPT-ACCEPT-1",
+  "actor": "demo-user",
+  "action": "ACCEPT",
+  "observed_at": "2026-01-01T00:00:03Z",
+  "mode": "replay",
+  "evidence_type": "replay_simulated",
+  "selected_candidate_id": "C1",
+  "note": "Simulated replay event for the public demo; not a host user receipt."
+}

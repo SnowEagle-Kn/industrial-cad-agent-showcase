@@ -1,0 +1,77 @@
+{
+  "fixture_id": "drawing-plate-demo",
+  "task_id": "DEMO-DRAWING-001",
+  "entry": "MANUFACTURING_CAD",
+  "allowed_file_sha256": [
+    "618f471a0c9db1400efc90547c51b7138b591623730be870fd0597c305195c32",
+    "ca25d62cc7c1211c62ba656bcb8b2eee0670b30f65fc86b58d9e17a312f4c6e7"
+  ],
+  "variants": {
+    "plate-demo.dxf": {
+      "file_sha256": "618f471a0c9db1400efc90547c51b7138b591623730be870fd0597c305195c32",
+      "entities": {
+        "LINE": 4,
+        "CIRCLE": 4,
+        "TEXT": 2
+      },
+      "unknown_types": [
+        "SPLINE"
+      ],
+      "extents_mm": {
+        "width": 120.0,
+        "height": 80.0
+      }
+    },
+    "plate-demo-mutated.dxf": {
+      "file_sha256": "ca25d62cc7c1211c62ba656bcb8b2eee0670b30f65fc86b58d9e17a312f4c6e7",
+      "entities": {
+        "LINE": 4,
+        "CIRCLE": 4,
+        "TEXT": 2
+      },
+      "unknown_types": [
+        "SPLINE"
+      ],
+      "extents_mm": {
+        "width": 130.0,
+        "height": 80.0
+      }
+    }
+  },
+  "required_parameters": [
+    "material",
+    "plate_thickness_mm",
+    "hole_spec",
+    "tolerance"
+  ],
+  "parameter_bounds": {
+    "plate_thickness_mm": [1, 20]
+  },
+  "allowed_parameter_digests": [
+    "efb18c68f7521125a634278c827ab2449845e2628be3b7d3aaa7c32c6c702656"
+  ],
+  "missing_conditions": [
+    "material",
+    "plate_thickness_mm",
+    "hole_spec",
+    "tolerance"
+  ],
+  "deliverable": {
+    "deliverable_id": "DRAWING-DELIVERY-1",
+    "media": [
+      {
+        "role": "preview-2d",
+        "source": "examples/drawing_to_deliverable/deliverable-preview-2d.svg"
+      },
+      {
+        "role": "preview-3d",
+        "source": "examples/drawing_to_deliverable/deliverable-preview-3d.png"
+      }
+    ],
+    "readback": {
+      "counts": {
+        "holes": 4
+      }
+    }
+  }
+}

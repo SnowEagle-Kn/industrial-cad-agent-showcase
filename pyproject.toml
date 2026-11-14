@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cad-agent-showcase"
+version = "0.1.0"
+description = "Two-entry industrial CAD agent workflow demo (DEMO/REPLAY only)"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+license = {text = "source-display-no-open-source-license - see LICENSE-PENDING.md (rights reserved subject to law, applicable platform terms and other explicit agreements)"}
+
+[tool.setuptools.packages.find]
+include = ["cad_agent_showcase*"]

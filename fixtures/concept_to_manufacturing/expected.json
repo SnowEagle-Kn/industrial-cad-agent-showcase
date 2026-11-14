@@ -1,0 +1,69 @@
+{
+  "fixture_id": "concept-sensor-bracket-demo",
+  "entry": "CONCEPT_CAD",
+  "allowed_input_digests": [
+    "cf45ee5129cf8300716788a4cc3bf312b234ac47f3e51d5cdbbab92364ee8e4e"
+  ],
+  "required_parameters": [
+    "envelope_length_mm",
+    "envelope_width_mm",
+    "plate_thickness_mm",
+    "hole_pitch_mm",
+    "material",
+    "load_n"
+  ],
+  "parameter_bounds": {
+    "envelope_length_mm": [1, 500],
+    "envelope_width_mm": [1, 500],
+    "plate_thickness_mm": [1, 20],
+    "hole_pitch_mm": [1, 500],
+    "load_n": [0, 1000]
+  },
+  "allowed_parameter_digests": [
+    "e263996cec321f993af3662fdeccc4331542ec2c40ad0207826927e80e5aae97",
+    "64d720ae704f53d17a3ac5cfcb5c51bdf9a579029f0c76802fb37ee23b56809b",
+    "681312548f6e559e718e7c611fdce2168a783925d8b56a955eb4027a27df90bc"
+  ],
+  "assumptions": [
+    "Concept candidates use placeholder proportions until parameters are supplied.",
+    "All candidate geometry is illustrative replay content, not CAD output."
+  ],
+  "candidates": [
+    {
+      "candidate_id": "C1",
+      "label": "Flat two-hole bracket (demo)",
+      "summary": "A flat plate with two mounting holes and a raised sensor pad.",
+      "assumptions": [
+        "Assumes a flat vertical panel and two M5 panel screws.",
+        "Assumes static load only; no vibration or fatigue case is evaluated."
+      ]
+    },
+    {
+      "candidate_id": "C2",
+      "label": "Rail-mounted bracket (demo)",
+      "summary": "A short rail adapter with the same sensor pad and two clamp screws.",
+      "assumptions": [
+        "Assumes a DIN-rail style mounting interface.",
+        "Assumes the sensor cable exits to the left."
+      ]
+    }
+  ],
+  "deliverable": {
+    "deliverable_id": "CONCEPT-DELIVERY-1",
+    "media": [
+      {
+        "role": "preview-2d",
+        "source": "examples/concept_to_manufacturing/concept-preview-2d.svg"
+      },
+      {
+        "role": "preview-3d",
+        "source": "examples/concept_to_manufacturing/concept-preview-3d.png"
+      }
+    ],
+    "readback": {
+      "counts": {
+        "holes": 2
+      }
+    }
+  }
+}

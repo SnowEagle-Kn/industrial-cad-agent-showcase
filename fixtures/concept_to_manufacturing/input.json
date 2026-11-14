@@ -1,0 +1,17 @@
+{
+  "kind": "concept",
+  "fixture_id": "concept-sensor-bracket-demo",
+  "task_id": "DEMO-CONCEPT-001",
+  "title": "Synthetic sensor mounting bracket (demo)",
+  "description": "Design a mounting bracket for a small sensor. Only the mounting location, approximate device envelope and orientation are known.",
+  "known": {
+    "mounting": "flat vertical panel, two M5 panel screws",
+    "device_envelope_mm": {
+      "length": 60,
+      "width": 40,
+      "height": 25
+    },
+    "orientation": "horizontal, sensor face down"
+  },
+  "notes": "All values are synthetic demo data. No real machine, site, customer, project or drawing is referenced."
+}

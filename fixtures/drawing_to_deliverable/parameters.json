@@ -1,0 +1,28 @@
+{
+  "kind": "drawing_parameters",
+  "fixture_id": "drawing-plate-demo",
+  "source": "user",
+  "parameters": [
+    {
+      "parameter_id": "material",
+      "value": "Q235 steel (DEMO)",
+      "unit": null
+    },
+    {
+      "parameter_id": "plate_thickness_mm",
+      "value": 5,
+      "unit": "mm"
+    },
+    {
+      "parameter_id": "hole_spec",
+      "value": "4 x 6 mm through holes (DEMO)",
+      "unit": null
+    },
+    {
+      "parameter_id": "tolerance",
+      "value": "general +/-0.2 mm (DEMO)",
+      "unit": "mm"
+    }
+  ],
+  "note": "Synthetic demo parameters supplied in the replay narrative; not engineering data."
+}
