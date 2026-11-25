@@ -16,10 +16,10 @@ Applicable GitHub terms preserve public viewing and forking rights and the
 platform's stated content-use rights. This notice does not prohibit those
 rights, override lawful exceptions or promise recall of existing copies.
 
-The mode follows delegated decision `CAD-PUBLIC-CLOSEOUT-20261113-R0-r1`,
-D02, dated 2026-11-14. It records an authorized distribution mode, not legal
-ownership verification or technical acceptance of the revised release candidate.
-It does not establish that publication or real CI has occurred.
+The project owner retained these source-display terms for the v0.2.0 source
+candidate on 2026-11-25. The earlier v0.1.0 distribution-mode record remains
+part of project history. Exact candidate review, publication and CI results
+are recorded against the corresponding Git commit.
 
 These terms concern only the explicitly admitted public source set. They grant
 no rights to a private CAD engine, private rules, real project data or material

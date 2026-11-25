@@ -1,5 +1,8 @@
 # Source release candidate
 
+For current v0.2.0 source and checks, see the [showcase README](README.md).
+This document records the historical v0.1.0 preparation snapshot.
+
 Candidate label: `PUBLIC-SOURCE-RC-20261113`. Package version: `0.1.0`.
 This label describes preparation work; it is not a published Git tag.
 

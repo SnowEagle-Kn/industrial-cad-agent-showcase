@@ -1,5 +1,11 @@
 # Source Distribution Checks
 
+For v0.2.0, the [disclosure check](../tests/test_disclosure_boundary.py) covers
+every tracked Python file and the public tree. The exact candidate, historical
+Git objects, restricted term inventory and offline snapshot checks are bound
+in the review evidence for that commit. The procedure below preserves the
+v0.1.0 preparation baseline.
+
 This document specifies the closeout checks at this rights revision's author
 snapshot, dated 2026-11-14. It does not report an integrated commit as inspected,
 reviewed or published. Current check receipts are external to the source tree

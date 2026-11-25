@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Command line entry: three public replay commands plus a rejection demo.
+"""Command line entry for public workflow replays and boundary verification.
 
 Exit codes:
   0  OK
@@ -12,15 +12,18 @@ import argparse
 import json
 import os
 import sys
+from pathlib import Path
 
 from . import workflow
-from .contracts import (CODE_ENGINE_FAILURE, CODE_INTERNAL_ERROR,
+from .contracts import (CODE_CORE_CAPABILITY_HIDDEN, CODE_DISCLOSURE_BOUNDARY,
+                        CODE_ENGINE_FAILURE, CODE_INTERNAL_ERROR,
                         CODE_INVALID_INVOCATION, CODE_LIVE_MODE_UNAVAILABLE,
                         CODE_OK, CODE_SCENARIO_MISMATCH, EXIT_ENGINE_FAILURE,
                         EXIT_INPUT_ERROR, EXIT_OK, EXIT_REJECTED,
                         STATUS_ENGINE_FAILURE, STATUS_INPUT_ERROR, STATUS_OK,
                         STATUS_REJECTED, FixtureIntegrityError, ReplayEngineFailure,
                         ReplayRejection, make_envelope, validate_envelope)
+from .ports.core_engine import CoreBoundaryError
 
 REJECT_CASES = ("missing-parameters", "out-of-range", "unknown-format")
 
@@ -40,12 +43,18 @@ def build_parser():
     for name, help_text in (
             ("concept", "concept -> UNKNOWN -> parameters -> confirmation -> replay delivery"),
             ("drawing", "drawing -> missing conditions -> confirmation -> replay delivery"),
-            ("confirmation-mutation", "version change / rejection / reuse / duplicate branches")):
+            ("confirmation-mutation", "version change / rejection / reuse / duplicate branches"),
+            ("eval", "run anonymous v1.1 judging and 128-vertex sensitivity"),
+            ("gates", "replay minimum-data and separate consent gates")):
         item = demo_sub.add_parser(name, help=help_text)
         _add_common(item)
+        if name == "drawing":
+            item.add_argument("--source", default=None,
+                              help="drawing path, restricted to the original synthetic fixtures")
     reject = demo_sub.add_parser("reject", help="run a legitimate rejection case")
     _add_common(reject)
     reject.add_argument("--case", required=True, choices=REJECT_CASES)
+    sub.add_parser("verify-boundary", help="verify the disclosure rules and fixed replay boundary")
     return parser
 
 
@@ -132,16 +141,35 @@ def _state_data(state, manifest_sha, readback):
     return data
 
 
+def _verify_boundary():
+    from .disclosure import scan_repository
+
+    root = Path(_repo_root())
+    engine = workflow.engine_for(root, root / "fixtures", False)
+    problems = list(scan_repository(root))
+    count = engine.verify_fixed_assets()
+    probes = (
+        ("outside drawing source", lambda: engine.inspect_drawing_source("external-input.dxf")),
+        ("outside media locator", lambda: engine.inspect_evidence_media(
+            Path("external-evidence.bin"), b"\0", {"kind": "image_region"})),
+    )
+    for label, probe in probes:
+        try:
+            probe()
+        except CoreBoundaryError as exc:
+            if exc.code == CODE_CORE_CAPABILITY_HIDDEN:
+                continue
+        problems.append("Unexpected replay boundary result for " + label)
+    return {"fixed_assets_verified": count, "boundary_probes": len(probes),
+            "problems": problems}
+
+
 def main(argv=None):
     parser = build_parser()
     args = parser.parse_args(argv)
-    command_label = "demo %s" % args.demo
+    command_label = "demo %s" % args.demo if args.command == "demo" else args.command
     context = {}
-    out_dir = args.out or os.path.join(os.getcwd(), "demo-output", args.demo)
-    fixtures = args.fixtures or os.path.join(_repo_root(), "fixtures")
-    fail_engine = bool(args.fail_engine or os.environ.get("CAD_SHOWCASE_FAIL_ENGINE") == "1")
-
-    if not args.replay:
+    if args.command == "demo" and not args.replay:
         envelope = make_envelope(
             command=command_label, entry=None, task_id=None, revision=0,
             input_digest=None, status=STATUS_INPUT_ERROR,
@@ -152,6 +180,33 @@ def main(argv=None):
         return EXIT_INPUT_ERROR
 
     try:
+        if args.command == "verify-boundary":
+            data = _verify_boundary()
+            code = CODE_DISCLOSURE_BOUNDARY if data["problems"] else CODE_OK
+            envelope = make_envelope(
+                command=command_label, entry=None, task_id=None, revision=0,
+                input_digest=None, code=code,
+                status=STATUS_REJECTED if data["problems"] else STATUS_OK, data=data,
+                errors=[{"code": code, "detail": detail} for detail in data["problems"]])
+            return _finalize(envelope, EXIT_REJECTED if data["problems"] else EXIT_OK)
+        out_dir = args.out or os.path.join(os.getcwd(), "demo-output", args.demo)
+        fixtures = args.fixtures or os.path.join(_repo_root(), "fixtures")
+        fail_engine = bool(args.fail_engine or os.environ.get("CAD_SHOWCASE_FAIL_ENGINE") == "1")
+        if args.demo in ("eval", "gates"):
+            from .orchestration.gating import run_gate_replay
+            from .orchestration.session_handoff import run_evaluation_replay
+
+            engine = workflow.engine_for(_repo_root(), fixtures, fail_engine)
+            if fail_engine:
+                raise ReplayEngineFailure(CODE_ENGINE_FAILURE, "Injected ReplayEngine failure.")
+            data = (run_evaluation_replay(engine, out_dir) if args.demo == "eval"
+                    else run_gate_replay(engine))
+            passed = data.get("passed", True)
+            envelope = make_envelope(
+                command=command_label, entry="CONCEPT_CAD", task_id=None, revision=0,
+                input_digest=None, status=STATUS_OK if passed else STATUS_REJECTED,
+                code=CODE_OK if passed else CODE_SCENARIO_MISMATCH, data=data)
+            return _finalize(envelope, EXIT_OK if passed else EXIT_REJECTED)
         if args.demo == "concept":
             state, manifest, manifest_sha, readback = workflow.run_concept_demo(
                 _repo_root(), fixtures, out_dir, fail_engine, context)
@@ -164,7 +219,7 @@ def main(argv=None):
             return _finalize(envelope, EXIT_OK)
         if args.demo == "drawing":
             state, manifest, manifest_sha, readback = workflow.run_drawing_demo(
-                _repo_root(), fixtures, out_dir, fail_engine, context)
+                _repo_root(), fixtures, out_dir, fail_engine, context, source=args.source)
             envelope = make_envelope(
                 command=command_label, entry=state["entry"], task_id=state["task_id"],
                 revision=state["revision"], input_digest=state["input_digest"],

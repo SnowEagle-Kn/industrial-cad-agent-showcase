@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-"""Public two-entry CAD agent replay demo.
+"""Replay entry points and deterministic workflow governance."""
 
-No CAD engine, no network, no private data.  Every result says DEMO/REPLAY.
-"""
+from . import governance
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
+__all__ = ["governance"]

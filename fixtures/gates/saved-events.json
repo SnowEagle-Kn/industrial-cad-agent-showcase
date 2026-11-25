@@ -1,0 +1,14 @@
+{
+  "saved-events.json#event:CONSENT-1": {
+    "action": "manufacturing_consent",
+    "actor": "user",
+    "binding_sha256": "cf98b3788577a42aefafcaca7e68c711cc18005cc8a39493d50fb624376313e1",
+    "consent": true,
+    "evidence_type": "replay_simulated",
+    "host_event_id": "REPLAY-EVT-CONSENT-1",
+    "observed_at": "2026-01-01T00:00:03Z",
+    "revision": 3,
+    "run_id": "SYNTHETIC-GATES",
+    "session_id": "REPLAY-CONSENT-CHANNEL"
+  }
+}

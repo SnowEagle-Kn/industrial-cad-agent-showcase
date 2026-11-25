@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:wishcad:neutral-evidence-map:1",
+  "title": "Coordinator-private map; never in J0 materials",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "wishcad.neutral-evidence-map.v1"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "coordinator_only": {
+      "const": true
+    },
+    "mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "evidence_id": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/id"
+          },
+          "private_source": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/source_ref"
+          },
+          "public_evidence": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/source_ref"
+          },
+          "content_transform": {
+            "const": "NONE"
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "evidence_id",
+          "private_source",
+          "public_evidence",
+          "content_transform",
+          "purpose"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "run_id",
+    "revision",
+    "coordinator_only",
+    "mappings"
+  ],
+  "additionalProperties": false
+}

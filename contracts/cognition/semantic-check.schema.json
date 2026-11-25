@@ -1,0 +1,760 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:wishcad:semantic-check:1",
+  "title": "Closed contract for post-render semantic observations",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "wishcad.semantic-check.v1"
+    },
+    "binding": {
+      "$ref": "#/$defs/binding"
+    },
+    "evaluator": {
+      "$ref": "#/$defs/evaluator"
+    },
+    "checked_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "feature_results": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/feature_result"
+      },
+      "minItems": 0
+    },
+    "overall_result": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "INCOMPLETE",
+        "INDETERMINATE"
+      ]
+    },
+    "critical_unresolved": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "limited_conclusion": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "schema",
+    "binding",
+    "evaluator",
+    "checked_at",
+    "feature_results",
+    "overall_result",
+    "critical_unresolved",
+    "limited_conclusion"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "file_ref": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "bytes"
+      ],
+      "additionalProperties": false
+    },
+    "locator": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "user_event",
+            "text_lines",
+            "dxf_entity",
+            "pdf_page",
+            "image_region",
+            "derived_record"
+          ]
+        },
+        "token": {
+          "type": "string",
+          "minLength": 1
+        },
+        "view_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "region": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "y": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "width": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "height": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "unit": {
+                  "enum": [
+                    "pixel",
+                    "normalized",
+                    "mm"
+                  ]
+                }
+              },
+              "required": [
+                "x",
+                "y",
+                "width",
+                "height",
+                "unit"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "token",
+        "view_id",
+        "region"
+      ],
+      "additionalProperties": false
+    },
+    "source_ref": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "locator": {
+          "$ref": "#/$defs/locator"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "locator"
+      ],
+      "additionalProperties": false
+    },
+    "region": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number",
+          "minimum": 0
+        },
+        "y": {
+          "type": "number",
+          "minimum": 0
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit": {
+          "enum": [
+            "px",
+            "normalized"
+          ]
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "unit"
+      ],
+      "additionalProperties": false
+    },
+    "view": {
+      "type": "object",
+      "properties": {
+        "view_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "image": {
+          "$ref": "#/$defs/file_ref"
+        },
+        "size": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "view_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "direction": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "viewpoint_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "view_id",
+        "image",
+        "size",
+        "view_type",
+        "direction",
+        "viewpoint_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "feature": {
+      "type": "object",
+      "properties": {
+        "feature_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "object_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_status": {
+          "enum": [
+            "USER_FACT",
+            "OBSERVED",
+            "ESTIMATED",
+            "DERIVED",
+            "ASSUMED",
+            "UNKNOWN",
+            "CONFLICT"
+          ]
+        },
+        "value_role": {
+          "enum": [
+            "EXISTING_FACT",
+            "DESIGN_CHOICE"
+          ]
+        },
+        "critical_for": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "preserve": {
+          "type": "boolean"
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source_ref"
+          },
+          "minItems": 0
+        },
+        "check_view_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "feature_id",
+        "object_id",
+        "evidence_status",
+        "value_role",
+        "critical_for",
+        "preserve",
+        "source_refs",
+        "check_view_ids"
+      ],
+      "additionalProperties": false
+    },
+    "binding": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "wishcad.semantic-binding.v1"
+        },
+        "task": {
+          "type": "object",
+          "properties": {
+            "root": {
+              "type": "string",
+              "minLength": 1
+            },
+            "run_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "revision": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "root",
+            "run_id",
+            "revision"
+          ],
+          "additionalProperties": false
+        },
+        "selected_candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidate_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidate": {
+          "$ref": "#/$defs/file_ref"
+        },
+        "scene": {
+          "$ref": "#/$defs/file_ref"
+        },
+        "scene_binding": {
+          "$ref": "#/$defs/file_ref"
+        },
+        "brief": {
+          "$ref": "#/$defs/file_ref"
+        },
+        "facts": {
+          "$ref": "#/$defs/file_ref"
+        },
+        "generalization": {
+          "$ref": "#/$defs/file_ref"
+        },
+        "source_manifest": {
+          "$ref": "#/$defs/file_ref"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "file": {
+                "$ref": "#/$defs/file_ref"
+              }
+            },
+            "required": [
+              "source_id",
+              "file"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        },
+        "authorization_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/file_ref"
+          },
+          "minItems": 0
+        },
+        "credential_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "render_manifest": {
+          "$ref": "#/$defs/file_ref"
+        },
+        "views": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/view"
+          },
+          "minItems": 1
+        },
+        "feature_inventory": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/feature"
+          },
+          "minItems": 0
+        },
+        "expected_feature_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "critical_unknown_feature_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "rules": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "implementation_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "schema_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "version",
+            "implementation_sha256",
+            "schema_sha256"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema",
+        "task",
+        "selected_candidate_id",
+        "candidate_version",
+        "candidate",
+        "scene",
+        "scene_binding",
+        "brief",
+        "facts",
+        "generalization",
+        "source_manifest",
+        "sources",
+        "authorization_refs",
+        "credential_sha256",
+        "render_manifest",
+        "views",
+        "feature_inventory",
+        "expected_feature_ids",
+        "critical_unknown_feature_ids",
+        "rules"
+      ],
+      "additionalProperties": false
+    },
+    "feature_result": {
+      "type": "object",
+      "properties": {
+        "feature_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_regions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_ref": {
+                "$ref": "#/$defs/source_ref"
+              },
+              "region": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/$defs/region"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "source_ref",
+              "region"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        },
+        "generated_regions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "view_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "image_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "viewpoint_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "region": {
+                "$ref": "#/$defs/region"
+              }
+            },
+            "required": [
+              "view_id",
+              "image_sha256",
+              "viewpoint_sha256",
+              "region"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        },
+        "criterion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "result": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NOT_CHECKED",
+            "UNASSESSABLE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unresolved": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        },
+        "applicability": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source_refs": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/source_ref"
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "reason",
+                "source_refs"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "feature_id",
+        "source_regions",
+        "generated_regions",
+        "criterion",
+        "result",
+        "reason",
+        "unresolved",
+        "applicability"
+      ],
+      "additionalProperties": false
+    },
+    "evaluator_identity": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "MODEL",
+            "HUMAN",
+            "OTHER"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "session_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "kind",
+        "source",
+        "model",
+        "session_ref"
+      ],
+      "additionalProperties": false
+    },
+    "evaluator": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "MODEL",
+            "HUMAN",
+            "OTHER"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "session_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_ref": {
+          "$ref": "#/$defs/file_ref"
+        },
+        "identity_authenticated": {
+          "const": false
+        },
+        "limitations": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "kind",
+        "source",
+        "model",
+        "session_ref",
+        "record_ref",
+        "identity_authenticated",
+        "limitations"
+      ],
+      "additionalProperties": false
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "wishcad.semantic-observation.v1"
+        },
+        "binding_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "evaluator": {
+          "$ref": "#/$defs/evaluator_identity"
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "feature_results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/feature_result"
+          },
+          "minItems": 0
+        },
+        "critical_unresolved": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "schema",
+        "binding_sha256",
+        "evaluator",
+        "checked_at",
+        "feature_results",
+        "critical_unresolved"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

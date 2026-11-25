@@ -1,0 +1,242 @@
+{
+  "schema": "wishcad.cognition-carrier-key-policy.v1",
+  "phase": "PUBLIC_REFERENCE",
+  "rule": "Before projection, reject undeclared full-carrier keys. Do not drop data to make a projection validate. Existing engineering/authorization contracts remain conjunctive.",
+  "carriers": {
+    "brief": {
+      "version": "wishcad.brief.v1.2",
+      "allowed_keys": [
+        "anchors",
+        "attribution_authority",
+        "context",
+        "criteria",
+        "delivery_scope",
+        "delivery_scope_source_refs",
+        "description",
+        "diversity_dimensions",
+        "diversity_min_core_different",
+        "diversity_min_different",
+        "entry_slots",
+        "evidence_gaps",
+        "fact_round",
+        "gate_results",
+        "gates",
+        "goal",
+        "hard_constraints",
+        "interface_mode",
+        "mode",
+        "mode_sha256",
+        "mode_source",
+        "near_margin",
+        "neutrality_review",
+        "quality_contract",
+        "recorded_at",
+        "requirements",
+        "requires_existing_object",
+        "revision",
+        "run_id",
+        "schema",
+        "shared_scenarios",
+        "title"
+      ],
+      "projection_keys": [
+        "schema",
+        "run_id",
+        "revision",
+        "entry_slots",
+        "delivery_scope",
+        "delivery_scope_source_refs",
+        "evidence_gaps"
+      ]
+    },
+    "facts": {
+      "version": "wishcad.facts.v1.2",
+      "allowed_keys": [
+        "schema",
+        "run_id",
+        "revision",
+        "source_manifest_ref",
+        "reference_frames",
+        "objects",
+        "interface",
+        "requires_existing_object",
+        "interface_mode",
+        "facts",
+        "parameters",
+        "goals_and_frames",
+        "constraints",
+        "preferences"
+      ],
+      "projection_keys": [
+        "schema",
+        "run_id",
+        "revision",
+        "source_manifest_ref",
+        "reference_frames",
+        "objects"
+      ],
+      "base_validator": "Interface, parameter, and source requirements still apply. The projection supplies no default values."
+    },
+    "generalization": {
+      "version": "wishcad.generalization.v1.1",
+      "allowed_keys": [
+        "schema",
+        "run_id",
+        "revision",
+        "goal_requirement_ids",
+        "success_observations",
+        "causal_hypotheses",
+        "change_scope",
+        "generalization",
+        "shared_scenarios"
+      ],
+      "projection_keys": [
+        "schema",
+        "run_id",
+        "revision",
+        "goal_requirement_ids",
+        "success_observations",
+        "causal_hypotheses",
+        "change_scope"
+      ]
+    },
+    "candidate": {
+      "version": "wishcad.candidate.v1.1",
+      "allowed_keys": [
+        "anonymous_id",
+        "author_session",
+        "brief_sha256",
+        "brief_version",
+        "candidate_id",
+        "capability_assessment",
+        "consumed_feature_ids",
+        "critical_unknowns",
+        "critique_received_ref",
+        "decision_records",
+        "design_answer_in_public_packet",
+        "endpoint",
+        "evidence_refs",
+        "failure_modes",
+        "first_draft_receipt",
+        "freeze",
+        "mechanism_signature",
+        "mode",
+        "parameters",
+        "quality",
+        "redacted_for_judge",
+        "release_authority_ref",
+        "replies",
+        "revision_parent_sha256",
+        "role",
+        "rubric_sha256",
+        "run_id",
+        "scenario_analysis",
+        "schema",
+        "scope",
+        "source_executor",
+        "template_state",
+        "text",
+        "uses_recorded_decisions_from",
+        "version"
+      ],
+      "projection_keys": [
+        "schema",
+        "capability_assessment",
+        "consumed_feature_ids",
+        "decision_records",
+        "critical_unknowns",
+        "evidence_refs"
+      ],
+      "base_validator": "current anonymize engineering structure and completeness, version updated only in candidate"
+    },
+    "scene": {
+      "version": "wishcad.scene-cognition.v1",
+      "allowed_keys": [
+        "schema",
+        "run_id",
+        "candidate_id",
+        "units",
+        "watermark",
+        "frame",
+        "environment",
+        "nodes",
+        "anchors",
+        "dimensions",
+        "views",
+        "scene_notes",
+        "cognition_schema",
+        "object_bindings",
+        "candidate_version",
+        "candidate_sha256"
+      ],
+      "projection_keys": [
+        "run_id",
+        "candidate_id",
+        "candidate_version",
+        "candidate_sha256",
+        "cognition_schema",
+        "object_bindings"
+      ]
+    }
+  },
+  "identity_paths": {
+    "top_level_null": [
+      "/author_session"
+    ],
+    "top_level_remove": [
+      "/role",
+      "/designer",
+      "/author",
+      "/session",
+      "/session_id",
+      "/parent_session",
+      "/started_by",
+      "/startedBy",
+      "/d_seat",
+      "/author_name",
+      "/chat_ref",
+      "/parent_preference",
+      "/source_executor_ref",
+      "/private_identity_map",
+      "/author_chat_ref",
+      "/designer_session",
+      "/design_session",
+      "/seat_id",
+      "/seat_label",
+      "/author_id",
+      "/author_ref",
+      "/author_chat",
+      "/window_id",
+      "/session_ref",
+      "/private_map_ref",
+      "/identity_map",
+      "/identity_map_ref"
+    ],
+    "nested": "Only schema-declared identity metadata paths from the existing identity policy; unknown engineering keys are rejected, not silently stripped. Generic engineering nouns and literals D1/P are not identity by themselves."
+  },
+  "anonymization": {
+    "result_schema": "wishcad.anonymize.v1.2",
+    "packet_schema": "wishcad.candidate.v1.1",
+    "candidate_id_mapping": "Existing neutral K01-K05 only",
+    "preserve_value_type_order_and_empty_containers": [
+      "/consumed_feature_ids",
+      "/decision_records",
+      "/critical_unknowns",
+      "/evidence_refs/layout"
+    ],
+    "nullable_paths": [
+      "/evidence_refs/layout",
+      "/decision_records/*/costs/*/value",
+      "/decision_records/*/costs/*/unit",
+      "/decision_records/*/verification/criterion"
+    ],
+    "neutral_reference_rule": "Reference leaves may change only through coordinator-private exact mapping to existing controlled byte-identical copies with stable evidence IDs and locators. All other values/types/order/container shape must compare equal.",
+    "no_text_global_replacement": true,
+    "private_mapping_never_exported": true
+  },
+  "compatibility": {
+    "old_candidate_version": "wishcad.candidate.v1.0",
+    "policy": "No defaults for new fields. Preserve full original, require explicit per-feature source-bound supplements, or reject COGNITION_UPGRADE_REQUIRED. Successful legacy behavior cannot receive new-version completeness or semantic approval.",
+    "source_manifest_migration": "Keep files order, path, bytes, SHA and originals. Add stable source_id/locators from explicit known evidence, recompute new-version canonical content hash, invalidate downstream bindings. Unknown locators cannot be invented."
+  }
+}

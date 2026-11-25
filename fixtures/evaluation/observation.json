@@ -1,0 +1,9 @@
+{
+  "records": [
+    {
+      "record_id": "OBS-1",
+      "summary": "Synthetic observation for reviewing the candidate explanation.",
+      "status": "recorded"
+    }
+  ]
+}

@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.2.0 source candidate
+
+- Adds the same-source governance layer, workflow contracts and explicit
+  private-engine port for inspection and local replay.
+- Adds blind evaluation and gate replay commands alongside the three existing
+  entries. The full-tree boundary check and the 72-item structure verifier
+  run separately in CI. The checklist entries remain NOT_RUN.
+- Adds the three-section showcase, two public Skill specifications and six
+  architecture decision records. The source-display rights terms continue.
+- The GitHub tag and Release follow exact-commit Windows and Ubuntu checks.
+
 ## Unreleased - Rights Consistency Revision - 2026-11-14
 
 - Applies delegated decision `CAD-PUBLIC-CLOSEOUT-20261113-R0-r1`, D02:

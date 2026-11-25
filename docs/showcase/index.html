@@ -3,190 +3,373 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="A Python industrial CAD project combining multi-agent concept design, drawing reconstruction, local STEP/DXF/PDF generation and file readback. Includes a reproducible public workflow replay.">
+<meta name="description" content="Agent-engineered dual-entry industrial CAD. Explore the runnable Python governance and orchestration, five-seat blind review, revision gates, and private-core boundary.">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; object-src 'none'">
-<title>Industrial CAD Agent Showcase | Concept Design &amp; Drawing Reconstruction</title>
-<style>:root{color-scheme:light dark}html,body{margin:0;background:light-dark(#fff,#181a1c)}body{min-width:280px}svg{vertical-align:middle}</style>
+<title>Industrial CAD Agent Showcase | Governance and Orchestration</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --paper: light-dark(#fff,#181a1c);
+    --ink: light-dark(#22272b,#f0f1f2);
+    --muted: light-dark(#555e64,#b7bec3);
+    --line: light-dark(#dce1e3,#383d41);
+    --soft: light-dark(#f4f6f6,#232729);
+    --teal: light-dark(#146454,#8dd6bc);
+    --teal-wash: light-dark(#eef7f3,#1c302a);
+    --coral: light-dark(#a43827,#f6a28d);
+    --coral-wash: light-dark(#faf1ed,#302520);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    background: var(--paper);
+    font: 15px/1.65 "Segoe UI","Microsoft YaHei",Arial,sans-serif;
+    overflow-wrap: anywhere;
+  }
+  [hidden] { display: none !important; }
+  h1, h2, h3, p, figure, dl { margin: 0; }
+  a { color: inherit; text-underline-offset: 4px; }
+  a:hover { color: var(--teal); }
+  button { color: inherit; font: inherit; }
+  :is(a,button,summary,[role="tabpanel"]):focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
+  .ic-inner { max-width: 1120px; margin: auto; padding: 0 32px; }
+  .ic-nav, .ic-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px 22px; }
+  .ic-nav { min-height: 64px; border-bottom: 1px solid var(--line); padding: 12px 0; }
+  .ic-brand { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 650; text-decoration: none; }
+  .ic-brand svg { width: 20px; height: 20px; color: var(--teal); }
+  .ic-nav-links { display: flex; align-items: center; gap: 4px 18px; flex-wrap: wrap; color: var(--muted); font-size: 13px; }
+  .ic-intro { padding: 30px 0 22px; }
+  h1 { font-size: clamp(28px,4.1vw,44px); line-height: 1.15; font-weight: 650; max-width: 850px; }
+  h2 { font-size: 23px; line-height: 1.35; font-weight: 650; }
+  h3 { font-size: 17px; line-height: 1.4; font-weight: 650; }
+  .ic-subtitle { margin-top: 10px; color: var(--teal); font-weight: 600; }
+  .ic-cn { display: block; color: var(--muted); margin-top: 4px; font-size: .93em; font-weight: 400; line-height: 1.8; }
+  .ic-lead { max-width: 91ch; margin-top: 15px; }
+  .ic-stack { display: flex; flex-wrap: wrap; gap: 5px 18px; padding: 0; margin: 14px 0 0; list-style: none; color: var(--teal); font-size: 13px; font-weight: 600; }
+  .ic-tabs { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; border-bottom: 1px solid var(--line); margin-bottom: 23px; }
+  .ic-tab, .ic-static-link { min-width: 0; min-height: 51px; padding: 8px; text-align: left; font-size: 14px; line-height: 1.35; }
+  .ic-tab { background: transparent; border: 0; border-bottom: 3px solid transparent; cursor: pointer; }
+  .ic-tab[aria-selected="true"] { border-bottom-color: var(--teal); color: var(--teal); font-weight: 650; }
+  .ic-tab small, .ic-static-link small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; font-weight: 400; }
+  .ic-static-link { display: block; }
+  #cad-showcase-v12:not(.ic-enhanced) :is(.ic-tab,.ic-media-controls), #cad-showcase-v12.ic-enhanced .ic-static-link { display: none; }
+  .ic-panel { padding-bottom: 22px; scroll-margin-top: 12px; }
+  .ic-block { border-top: 1px solid var(--line); margin-top: 23px; padding-top: 19px; }
+  .ic-block p, .ic-card p, .ic-boundary p { margin-top: 7px; }
+  .ic-boundary { margin-top: 16px; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); border: 1px solid var(--line); }
+  .ic-boundary > div { min-width: 0; padding: 14px 16px; }
+  .ic-boundary > div:first-child { background: var(--teal-wash); }
+  .ic-boundary > div:last-child { background: var(--coral-wash); }
+  .ic-boundary > div:first-child h3 { color: var(--teal); }
+  .ic-boundary > div:last-child h3 { color: var(--coral); }
+  .ic-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px 24px; margin-top: 13px; }
+  .ic-card { min-width: 0; border-top: 2px solid var(--teal); padding-top: 11px; }
+  .ic-card + .ic-card { border-top-color: var(--coral); }
+  .ic-toolrow { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 20px; align-items: center; margin-bottom: 11px; }
+  .ic-media-controls { display: flex; flex-wrap: wrap; gap: 7px; }
+  .ic-media-button { min-height: 38px; padding: 6px 10px; border: 1px solid var(--line); background: var(--paper); border-radius: 4px; font-size: 13px; cursor: pointer; }
+  .ic-media-button[aria-pressed="true"] { color: var(--paper); background: var(--ink); border-color: var(--ink); }
+  figure + figure { margin-top: 13px; }
+  .ic-drawing { width: 100%; height: auto; max-height: 500px; display: block; object-fit: contain; background: #fff; border: 1px solid var(--line); }
+  .ic-caption { color: var(--muted); font-size: 13px; margin-top: 8px; }
+  .ic-topology { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); gap: 14px 24px; align-items: center; margin-top: 14px; }
+  .ic-topology figure { min-width: 0; background: var(--soft); border: 1px solid var(--line); padding: 11px; }
+  .ic-topology svg { display: block; width: 100%; max-width: 400px; height: auto; margin: auto; }
+  .ic-svg-zone { fill: var(--teal-wash); stroke: var(--teal); }
+  .ic-svg-path { fill: none; stroke: var(--muted); stroke-width: 1.4; }
+  .ic-svg-label { fill: var(--ink); font: 650 13px "Segoe UI",Arial,sans-serif; text-anchor: middle; }
+  .ic-roles dt { font-weight: 650; }
+  .ic-roles dd { margin: 0 0 9px; color: var(--muted); }
+  .ic-card-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; margin-top: 13px; align-items: start; }
+  .ic-card-list details { border: 1px solid var(--line); padding: 10px 12px; min-width: 0; background: var(--soft); border-radius: 4px; }
+  summary { cursor: pointer; font-weight: 600; }
+  .ic-table { width: 100%; border-collapse: collapse; table-layout: fixed; margin-top: 10px; font-size: 14px; }
+  .ic-table th, .ic-table td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .ic-table tr > :first-child { width: 29%; }
+  .ic-table thead { color: var(--muted); }
+  .ic-adr { margin: 8px 0 0; padding-left: 20px; }
+  .ic-adr li { margin: 4px 0; }
+  code { font: .9em/1.65 Consolas,"Courier New",monospace; overflow-wrap: anywhere; }
+  .ic-code { background: var(--soft); padding: 13px; margin: 12px 0; border: 1px solid var(--line); border-radius: 4px; font-size: 13px; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .ic-footer { border-top: 1px solid var(--line); padding: 16px 0 20px; color: var(--muted); font-size: 13px; }
+  @media (max-width: 640px) {
+    .ic-inner { padding: 0 16px; }
+    .ic-intro { padding-top: 22px; }
+    .ic-boundary, .ic-grid, .ic-topology, .ic-card-list { grid-template-columns: minmax(0,1fr); }
+    .ic-tabs { gap: 3px; }
+    .ic-tab, .ic-static-link { padding: 7px 3px; font-size: 13px; }
+    .ic-table th, .ic-table td { padding: 8px 6px; }
+  }
+  @media (pointer: coarse) {
+    .ic-media-button, summary { min-height: 44px; }
+  }
+</style>
 </head>
 <body>
-<div id="cad-showcase-v12" lang="en">
-  <style>
-    #cad-showcase-v12 { --ic-paper:light-dark(#ffffff,#181a1c); --ic-ink:light-dark(#22272b,#f0f1f2); --ic-sub:light-dark(#555e64,#b7bec3); --ic-line:light-dark(#dce1e3,#383d41); --ic-soft:light-dark(#f4f6f6,#232729); --ic-teal:light-dark(#146454,#8dd6bc); --ic-coral:light-dark(#b83f29,#f6a28d); color:var(--ic-ink); background:var(--ic-paper); font:15px/1.65 "Segoe UI","Microsoft YaHei",Arial,sans-serif; letter-spacing:0; overflow-wrap:anywhere; }
-    #cad-showcase-v12 * { box-sizing:border-box; font-family:"Segoe UI","Microsoft YaHei",Arial,sans-serif!important; }
-    #cad-showcase-v12 [hidden] { display:none!important; }
-    #cad-showcase-v12 h1,#cad-showcase-v12 h2,#cad-showcase-v12 h3,#cad-showcase-v12 p,#cad-showcase-v12 figure { margin:0; }
-    #cad-showcase-v12 a { color:inherit; text-underline-offset:4px; }
-    #cad-showcase-v12 button { font:inherit; color:inherit; }
-    #cad-showcase-v12 .ic-inner { max-width:1120px; margin:auto; padding:0 32px; }
-    #cad-showcase-v12 .ic-nav { min-height:64px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; border-bottom:1px solid var(--ic-line); padding:15px 0; }
-    #cad-showcase-v12 .ic-brand { display:inline-flex; align-items:center; gap:8px; font-size:14px; font-weight:600; text-decoration:none; }
-    #cad-showcase-v12 .ic-brand svg { width:20px; height:20px; color:var(--ic-teal); }
-    #cad-showcase-v12 .ic-nav-links { display:flex; align-items:center; gap:20px; flex-wrap:wrap; font-size:12px; color:var(--ic-sub); }
-    #cad-showcase-v12 .ic-nav-links a { display:inline-flex; align-items:center; gap:6px; text-decoration:none; }
-    #cad-showcase-v12 .ic-nav-links svg { width:15px; height:15px; }
-    #cad-showcase-v12 .ic-intro { padding:25px 0 20px; }
-    #cad-showcase-v12 .ic-kicker { color:var(--ic-teal); font-size:12px; font-weight:600; margin-bottom:8px; }
-    #cad-showcase-v12 h1 { font-size:30px; line-height:1.25; font-weight:600; max-width:800px; }
-    #cad-showcase-v12 .ic-cn-name { font-size:16px; color:var(--ic-sub); margin-top:7px; }
-    #cad-showcase-v12 .ic-lead { font-size:16px; max-width:940px; margin-top:14px; }
-    #cad-showcase-v12 .ic-cn { color:var(--ic-sub); margin-top:7px; font-size:14px; line-height:1.85; }
-    #cad-showcase-v12 .ic-stack { display:flex; flex-wrap:wrap; gap:4px 22px; margin-top:15px; font:12px/1.9 Consolas,monospace; color:var(--ic-teal); }
-    #cad-showcase-v12 .ic-tabs { display:flex; align-items:stretch; gap:25px; border-bottom:1px solid var(--ic-line); margin-bottom:22px; }
-    #cad-showcase-v12 .ic-tab { min-height:54px; background:transparent; border:0; border-bottom:3px solid transparent; padding:7px 0; font-size:13px; color:var(--ic-sub); text-align:left; display:flex; align-items:center; gap:8px; }
-    #cad-showcase-v12 .ic-tab svg { width:17px; height:17px; flex-shrink:0; }
-    #cad-showcase-v12 .ic-tab[aria-selected="true"] { border-bottom-color:var(--ic-teal); color:var(--ic-ink); font-weight:600; }
-    #cad-showcase-v12 .ic-tab small { font-size:12px; font-weight:400; }
-    #cad-showcase-v12:not(.ic-enhanced) .ic-tab,#cad-showcase-v12:not(.ic-enhanced) .ic-media-controls { display:none; }
-    #cad-showcase-v12 .ic-static-link { padding:14px 0; font-size:13px; }
-    #cad-showcase-v12.ic-enhanced .ic-static-link { display:none; }
-    #cad-showcase-v12 h2 { font-size:21px; line-height:1.4; font-weight:600; }
-    #cad-showcase-v12 h3 { font-size:17px; line-height:1.45; font-weight:600; }
-    #cad-showcase-v12 .ic-title { display:flex; align-items:baseline; flex-wrap:wrap; gap:6px 12px; margin-bottom:16px; }
-    #cad-showcase-v12 .ic-title>span { color:var(--ic-sub); font-size:13px; }
-    #cad-showcase-v12 .ic-routes { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:30px; padding-bottom:23px; }
-    #cad-showcase-v12 .ic-route { min-width:0; border-top:2px solid var(--ic-teal); padding-top:15px; }
-    #cad-showcase-v12 .ic-route:last-child { border-top-color:var(--ic-coral); }
-    #cad-showcase-v12 .ic-route-number { font:12px/1.4 Consolas,monospace; color:var(--ic-teal); margin-bottom:8px; }
-    #cad-showcase-v12 .ic-route:last-child .ic-route-number { color:var(--ic-coral); }
-    #cad-showcase-v12 .ic-route h3 span { display:block; font-size:14px; font-weight:400; color:var(--ic-sub); margin-top:3px; }
-    #cad-showcase-v12 .ic-route p { font-size:13px; margin-top:11px; }
-    #cad-showcase-v12 .ic-route p[lang="zh-CN"] { color:var(--ic-sub); margin-top:6px; line-height:1.85; }
-    #cad-showcase-v12 .ic-output { border-top:1px solid var(--ic-line); padding:21px 0 25px; }
-    #cad-showcase-v12 .ic-output-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:13px; }
-    #cad-showcase-v12 .ic-output-heading .ic-title { margin:0; }
-    #cad-showcase-v12 .ic-media-controls { display:flex; flex-wrap:wrap; gap:8px; }
-    #cad-showcase-v12 .ic-media-button { min-height:36px; border:1px solid var(--ic-line); background:var(--ic-paper); padding:6px 10px; border-radius:4px; font-size:12px; }
-    #cad-showcase-v12 .ic-media-button[aria-pressed="true"] { color:var(--ic-paper); background:var(--ic-ink); border-color:var(--ic-ink); }
-    #cad-showcase-v12 .ic-drawing { width:100%; height:auto; aspect-ratio:1.414/1; display:block; object-fit:contain; background:light-dark(#ffffff,#ffffff); border:1px solid var(--ic-line); }
-    #cad-showcase-v12 .ic-caption { margin-top:10px; color:var(--ic-sub); font-size:12px; }
-    #cad-showcase-v12 .ic-caption span { display:block; margin-top:3px; }
-    #cad-showcase-v12 .ic-work { padding:22px 0; border-top:1px solid var(--ic-line); }
-    #cad-showcase-v12 .ic-work-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 30px; }
-    #cad-showcase-v12 .ic-work-item { min-width:0; }
-    #cad-showcase-v12 .ic-work-item h3 { font-size:15px; display:flex; align-items:center; gap:8px; }
-    #cad-showcase-v12 .ic-work-item svg { width:17px; height:17px; color:var(--ic-teal); flex-shrink:0; }
-    #cad-showcase-v12 .ic-work-item p { font-size:13px; margin-top:7px; }
-    #cad-showcase-v12 .ic-public { padding:22px 0 27px; border-top:1px solid var(--ic-line); }
-    #cad-showcase-v12 .ic-public p { margin-top:9px; }
-    #cad-showcase-v12 .ic-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:17px; }
-    #cad-showcase-v12 .ic-action { min-height:40px; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:8px 13px; border:1px solid var(--ic-line); border-radius:4px; font-size:13px; text-decoration:none; }
-    #cad-showcase-v12 .ic-action svg { width:16px; height:16px; flex-shrink:0; }
-    #cad-showcase-v12 .ic-action-primary { background:var(--ic-ink); color:var(--ic-paper); border-color:var(--ic-ink); }
-    #cad-showcase-v12 .ic-tech-section { padding:20px 0; border-top:1px solid var(--ic-line); }
-    #cad-showcase-v12 .ic-tech-section:first-child { padding-top:0; border-top:0; }
-    #cad-showcase-v12 .ic-tech-section p { margin-top:10px; font-size:14px; }
-    #cad-showcase-v12 .ic-table { width:100%; border-collapse:collapse; table-layout:fixed; margin:14px 0; font-size:13px; }
-    #cad-showcase-v12 .ic-table th,#cad-showcase-v12 .ic-table td { text-align:left; padding:11px 8px; border-bottom:1px solid var(--ic-line); vertical-align:top; }
-    #cad-showcase-v12 .ic-table th { font-size:12px; color:var(--ic-sub); font-weight:500; }
-    #cad-showcase-v12 .ic-table td:first-child,#cad-showcase-v12 .ic-table th:first-child { width:34%; }
-    #cad-showcase-v12 .ic-table td span { display:block; color:var(--ic-sub); margin-top:4px; }
-    #cad-showcase-v12 code { font:12px/1.8 Consolas,"Courier New",monospace; overflow-wrap:anywhere; word-break:break-all; white-space:normal; padding:0; border:0; border-radius:0; background:transparent; }
-    #cad-showcase-v12 code,#cad-showcase-v12 code *,#cad-showcase-v12 .ic-stack,#cad-showcase-v12 .ic-stack span,#cad-showcase-v12 .ic-route-number { font-family:Consolas,"Courier New",monospace!important; }
-    #cad-showcase-v12 .ic-code code { white-space:pre-wrap; }
-    #cad-showcase-v12 .ic-code { font:12px/1.9 Consolas,"Courier New",monospace; background:var(--ic-soft); border-radius:4px; padding:15px; margin:15px 0; white-space:pre-wrap; overflow-wrap:anywhere; }
-    #cad-showcase-v12 details { border-top:1px solid var(--ic-line); padding:15px 0; font-size:13px; }
-    #cad-showcase-v12 summary { font-weight:500; }
-    #cad-showcase-v12 details p { margin-top:10px; color:var(--ic-sub); }
-    #cad-showcase-v12 .ic-footer { border-top:1px solid var(--ic-line); padding:18px 0 23px; font-size:12px; color:var(--ic-sub); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
-    #cad-showcase-v12 button:focus-visible,#cad-showcase-v12 a:focus-visible,#cad-showcase-v12 summary:focus-visible { outline:2px solid var(--ic-coral); outline-offset:4px; }
-    @media (max-width:600px) {
-      #cad-showcase-v12 .ic-inner { padding:0 18px; }
-      #cad-showcase-v12 .ic-nav { align-items:flex-start; }
-      #cad-showcase-v12 .ic-routes,#cad-showcase-v12 .ic-work-grid { grid-template-columns:minmax(0,1fr); gap:22px; }
-      #cad-showcase-v12 .ic-tabs { gap:20px; }
-      #cad-showcase-v12 .ic-table td,#cad-showcase-v12 .ic-table th { padding-left:0; padding-right:8px; }
-      #cad-showcase-v12 .ic-output-heading { align-items:flex-start; }
-    }
-    @media (pointer:coarse) { #cad-showcase-v12 .ic-media-button,#cad-showcase-v12 .ic-action,#cad-showcase-v12 .ic-nav-links a,#cad-showcase-v12 summary { min-height:44px; } }
-  </style>
+<div id="cad-showcase-v12">
   <div class="ic-inner">
     <nav class="ic-nav" aria-label="Project navigation">
-      <a class="ic-brand" href="https://github.com/SnowEagle-Kn/industrial-cad-agent-showcase" target="_blank" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-box"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>CAD Agent Showcase</a>
-      <div class="ic-nav-links"><a href="https://github.com/SnowEagle-Kn/industrial-cad-agent-showcase" target="_blank" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-github"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>GitHub</a><a href="https://github.com/SnowEagle-Kn/industrial-cad-agent-showcase/releases/tag/v0.1.0" target="_blank" rel="noopener noreferrer">Public replay v0.1.0<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-arrow-up-right"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a></div>
-    </nav>
-    <header class="ic-intro">
-      <div class="ic-kicker">PYTHON · MULTI-AGENT DESIGN · CAD ENGINEERING</div>
-      <h1>Industrial CAD Agent Showcase</h1>
-      <p class="ic-cn-name" lang="zh-CN">工业 CAD 双入口智能设计与制图</p>
-      <p class="ic-lead">Multi-agent concept design and drawing reconstruction, brought together with structured parameters, scene-based visualization, real STEP/DXF/PDF generation, and file readback checks.</p>
-      <p class="ic-cn" lang="zh-CN">将多智能体概念设计与图纸复建相连接，涵盖结构化参数、场景驱动可视化、真实 STEP/DXF/PDF 生成及文件回读核对。</p>
-      <div class="ic-stack"><span>Python</span><span>Multi-agent orchestration</span><span>OCP / OCCT</span><span>STEP · DXF · PDF</span><span>GLB · PNG · HTML</span></div>
-    </header>
-    <div class="ic-tabs" aria-label="Project sections / 项目内容">
-      <a class="ic-static-link" href="#ic-overview">Overview / 项目概览</a><a class="ic-static-link" href="#ic-technical">Technical Details / 技术说明</a>
-      <button class="ic-tab cursor-interaction" type="button" role="tab" id="ic-overview-tab" aria-selected="true" aria-controls="ic-overview"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-layout-grid"><rect width="7" height="7" x="3" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="14" rx="1"></rect><rect width="7" height="7" x="3" y="14" rx="1"></rect></svg><span>Overview<br><small lang="zh-CN">项目概览</small></span></button>
-      <button class="ic-tab cursor-interaction" type="button" role="tab" id="ic-technical-tab" aria-selected="false" aria-controls="ic-technical"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-code-xml"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg><span>Technical Details<br><small lang="zh-CN">技术说明</small></span></button>
-    </div>
-    <section id="ic-overview" aria-labelledby="ic-overview-tab">
-      <div class="ic-title"><h2>Two ways into CAD</h2><span lang="zh-CN">从想法出发，也从图纸出发</span></div>
-      <div class="ic-routes">
-        <article class="ic-route"><div class="ic-route-number">A / CONCEPT DESIGN</div><h3>Explore, compare, visualize<span lang="zh-CN">概念设计、方案比较、可视化</span></h3><p>The concept workflow implements five design seats, anonymous evaluation, diversity and scoring checks, then connects candidate selection to scene-based multi-view rendering.</p><p lang="zh-CN">概念链实现五席设计、匿名评选、差异与评分检查，再将选案衔接到场景驱动的多视图渲染。</p><p>PNG · GLB · PDF sheets · HTML</p></article>
-        <article class="ic-route"><div class="ic-route-number">B / DRAWING RECONSTRUCTION</div><h3>Read, model, generate, check<span lang="zh-CN">原图取数、建模、出图、回读</span></h3><p>The drawing route connects supported DXF/vector PDF inventory and review to development modeling. The local CAD backend writes real STEP/DXF/PDF artifacts and reads them back.</p><p lang="zh-CN">图纸链接通支持的 DXF/矢量 PDF 对象取数、复核与开发建模。本地 CAD 后端生成真实 STEP/DXF/PDF，并回读核对。</p><p>STEP · Native DXF · PDF · Readback</p></article>
+      <a class="ic-brand" href="../../README.md"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-box"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg> CAD Agent Showcase</a>
+      <div class="ic-nav-links">
+        <a href="https://github.com/SnowEagle-Kn/industrial-cad-agent-showcase">GitHub</a>
+        <a href="https://github.com/SnowEagle-Kn/industrial-cad-agent-showcase/releases/tag/v0.1.0">Historical v0.1.0 / 历史版本</a>
       </div>
-      <section class="ic-output">
-        <div class="ic-output-heading"><div class="ic-title"><h2>From the actual output</h2><span lang="zh-CN">已有真实开发出图</span></div><div class="ic-media-controls" role="group" aria-label="Drawing examples / 出图样例"><button class="ic-media-button cursor-interaction" type="button" data-example="drawing" aria-pressed="true">Drawing route / 图纸链</button><button class="ic-media-button cursor-interaction" type="button" data-example="pattern" aria-pressed="false">Repeated features / 重复特征</button></div></div>
-        <figure data-example-panel="drawing"><img class="ic-drawing" width="1263" height="893" src="media/design-drawing-example.png" alt="Actual four-view drawing of a synthetic two-hole plate, generated by the drawing-input development route; original development status labels retained"><figcaption class="ic-caption">Synthetic drawing-input development case: a real four-view design drawing.<span lang="zh-CN">合成原图开发案例：图纸链实际生成的四视图设计图，保留原图面状态。</span></figcaption></figure>
-        <figure data-example-panel="pattern" hidden><img class="ic-drawing" width="450" height="350" src="media/patterned-plate-isometric-detail.png" alt="Isometric detail crop from the original synthetic 100-hole geometry-backend development drawing; full source sheet retained"><figcaption class="ic-caption">Isometric detail crop from a synthetic 100-hole geometry-backend development drawing. The full source sheet is retained; its status is DEVELOPMENT FIXTURE / NOT FOR MANUFACTURE.<span lang="zh-CN">合成 100 孔几何后端开发图的等轴测局部摘图。完整原图保留；原图状态为 DEVELOPMENT FIXTURE / NOT FOR MANUFACTURE（开发夹具，非制造用）。</span></figcaption></figure>
-      </section>
-      <section class="ic-work">
-        <div class="ic-title"><h2>Engineering behind the result</h2><span lang="zh-CN">成果背后的工程实现</span></div>
-        <p style="margin-bottom:8px">Existing synthetic outputs include 100-hole and 256-hole plates, real CAD models, native DXF dimensions, and multi-page PDF drawings. The drawing implementation supports A2/A1/A0 layouts and model-bound dimension detail sheets.</p>
-        <p class="ic-cn" lang="zh-CN" style="margin-bottom:20px">已有合成产物包括 100 孔与 256 孔板件、真实 CAD 模型、原生 DXF 尺寸及多页 PDF 图纸。出图实现支持 A2/A1/A0 图幅和绑定模型的尺寸详情页。</p>
-        <div class="ic-work-grid">
-          <article class="ic-work-item"><h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-network"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path><path d="M12 12V8"></path></svg>Multi-agent workflow</h3><p>Five-seat orchestration, anonymous review packets, six-dimensional diversity and seven-criterion evaluation.</p><p class="ic-cn" lang="zh-CN">五席编排、匿名审查包、六维差异与七项标准评选。</p></article>
-          <article class="ic-work-item"><h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-shapes"><path d="M8.3 10a.7.7 0 0 1-.626-1.079L11.4 3a.7.7 0 0 1 1.198-.043L16.3 8.9a.7.7 0 0 1-.572 1.1Z"></path><rect x="3" y="14" width="7" height="7" rx="1"></rect><circle cx="17.5" cy="17.5" r="3.5"></circle></svg>Geometry and visualization</h3><p>Scene-driven views, parameter-to-feature translation, B-Rep modeling and native drawing output.</p><p class="ic-cn" lang="zh-CN">场景驱动视图、参数到特征的转换、B-Rep 建模与原生出图。</p></article>
-          <article class="ic-work-item"><h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-scan-line"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><path d="M7 12h10"></path></svg>File readback</h3><p>Read generated geometry and drawing files back; compare dimensions and retain artifact records.</p><p class="ic-cn" lang="zh-CN">回读已生成的几何与图纸文件，核对尺寸并保存产物记录。</p></article>
-          <article class="ic-work-item"><h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-git-branch"><path d="M15 6a9 9 0 0 0-9 9V3"></path><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle></svg>Traceable revisions</h3><p>Bind inputs, parameters and decisions to versions. Invalidate stale confirmations when upstream content changes.</p><p class="ic-cn" lang="zh-CN">将输入、参数和决策绑定到版本，上游变化后使旧确认失效。</p></article>
+    </nav>
+
+    <header class="ic-intro">
+      <h1>Industrial CAD Agent Showcase</h1>
+      <p class="ic-subtitle">Agent-Engineered Dual-Entry CAD Governance &amp; Orchestration Spine<span class="ic-cn" lang="zh-CN">Agent 工程化工业 CAD 双入口编排与可信治理骨架</span></p>
+      <p class="ic-lead">How do AI agents work on the same CAD decision without losing provenance or turning assumptions into approvals? Trace the public Python governance and orchestration from shared facts and blind review through revision gates and delivery evidence.<span class="ic-cn" lang="zh-CN">怎样让 AI Agent 协同完成 CAD 决策，同时保留证据来源，避免把假设当作批准？在公开的 Python 治理与编排层，可以从共享事实和盲评追踪到版本门控与交付证据。</span></p>
+      <ul class="ic-stack">
+        <li>82 core modules / 82 个核心模块</li>
+        <li>30,588 local LOC / 本地行数</li>
+        <li>~5,000 public spine LOC / 公开骨架行数</li>
+      </ul>
+    </header>
+
+    <div class="ic-tabs" aria-label="Project sections / 项目内容">
+      <a class="ic-static-link" href="#ic-overview">Overview<small lang="zh-CN">项目概览</small></a>
+      <a class="ic-static-link" href="#ic-agent">Agent Engineering<small lang="zh-CN">Agent 工程</small></a>
+      <a class="ic-static-link" href="#ic-technical">Technical &amp; Verification<small lang="zh-CN">技术与验证</small></a>
+      <button class="ic-tab" id="ic-overview-tab" type="button" aria-controls="ic-overview">Overview<small lang="zh-CN">项目概览</small></button>
+      <button class="ic-tab" id="ic-agent-tab" type="button" aria-controls="ic-agent">Agent Engineering<small lang="zh-CN">Agent 工程</small></button>
+      <button class="ic-tab" id="ic-technical-tab" type="button" aria-controls="ic-technical">Technical &amp; Verification<small lang="zh-CN">技术与验证</small></button>
+    </div>
+
+    <main>
+      <section class="ic-panel" id="ic-overview" aria-labelledby="ic-overview-title">
+        <h2 id="ic-overview-title">Public and private architecture<span class="ic-cn" lang="zh-CN">公开层与私有层</span></h2>
+        <div class="ic-boundary">
+          <div>
+            <h3>Public Python spine<span class="ic-cn" lang="zh-CN">公开 Python 骨架</span></h3>
+            <p>Source-derived governance, orchestration and contracts run on digest-checked synthetic fixtures. The public adapter returns pre-generated results.<span class="ic-cn" lang="zh-CN">同源治理、编排与契约在经摘要校验的合成夹具上运行，公开适配器返回预生成结果。</span></p>
+          </div>
+          <div>
+            <h3>Private industrial core<span class="ic-cn" lang="zh-CN">私有工业核心</span></h3>
+            <p><code>CoreEnginePort</code> separates calibrated PDF/DXF intake, parameter mapping, B-Rep operations, independent readback, and rendering from the public package.<span class="ic-cn" lang="zh-CN"><code>CoreEnginePort</code> 将 PDF/DXF 标定取数、参数映射、B-Rep 操作、独立回读和渲染隔离在公开包之外。</span></p>
+          </div>
         </div>
+        <section class="ic-block">
+          <h3>Two ways into CAD<span class="ic-cn" lang="zh-CN">双入口流程</span></h3>
+          <div class="ic-grid">
+            <article class="ic-card">
+              <h3>Concept design<span class="ic-cn" lang="zh-CN">概念设计</span></h3>
+              <p>Bind a brief and its unknowns, compare five independently authored concepts, and capture the selected revision before visual delivery.<span class="ic-cn" lang="zh-CN">绑定需求和未知项，比较五席独立构思，在交付概念视图前记录选定版本。</span></p>
+            </article>
+            <article class="ic-card">
+              <h3>Drawing reconstruction<span class="ic-cn" lang="zh-CN">图纸复建</span></h3>
+              <p>Review source objects and missing engineering data before confirming the drawing revision. Replay exercises that binding on a fixed synthetic drawing.<span class="ic-cn" lang="zh-CN">复核原图对象和工程缺项，再确认图纸版本。公开回放以固定合成图验证该绑定。</span></p>
+            </article>
+          </div>
+        </section>
+        <section class="ic-block" aria-labelledby="ic-drawings-title">
+          <div class="ic-toolrow">
+            <h3 id="ic-drawings-title">Synthetic development drawings<span class="ic-cn" lang="zh-CN">合成开发出图</span></h3>
+            <div class="ic-media-controls" role="group" aria-label="Drawing examples / 出图样例">
+              <button class="ic-media-button" type="button" data-example="drawing" aria-pressed="true">Drawing route / 图纸链</button>
+              <button class="ic-media-button" type="button" data-example="pattern" aria-pressed="false">Pattern detail / 重复孔局部</button>
+            </div>
+          </div>
+          <figure data-example-panel="drawing">
+            <img class="ic-drawing" width="1263" height="893" src="media/design-drawing-example.png" alt="Complete four-view synthetic two-hole plate drawing with its original development labels">
+            <figcaption class="ic-caption">Complete four-view drawing from a synthetic drawing-reconstruction development case. Original labels are preserved.<span class="ic-cn" lang="zh-CN">合成图纸复建开发案例生成的完整四视图出图，保留原图面标识。</span></figcaption>
+          </figure>
+          <figure data-example-panel="pattern">
+            <img class="ic-drawing" width="450" height="350" src="media/patterned-plate-isometric-detail.png" alt="Isometric detail crop of a synthetic 100-hole plate drawing">
+            <figcaption class="ic-caption">Lossless 450 × 350 PNG crop of a synthetic 100-hole plate. The full sheet is marked DEVELOPMENT FIXTURE / NOT FOR MANUFACTURE and has overlapping view regions. The illustration covers the crop only.<span class="ic-cn" lang="zh-CN">合成百孔板的 450 × 350 像素无损 PNG 摘图。原完整图标有 DEVELOPMENT FIXTURE / NOT FOR MANUFACTURE，且含视图区交叠。此处展示范围限该局部。</span></figcaption>
+          </figure>
+          <p>Both figures are bounded development evidence. 两图均为限定范围的开发证据。 <a href="MEDIA.md">Media provenance / 素材来源</a></p>
+        </section>
       </section>
-      <section class="ic-public"><h2>Explore the public work</h2><p>The public v0.1.0 package provides reproducible Python workflow replays, refusal tests, revision binding and delivery evidence. Local CAD generation and the wider design implementation are presented in Technical Details.</p><p class="ic-cn" lang="zh-CN">公开 v0.1.0 包提供可复现的 Python 工作流回放、拒绝测试、版本绑定和交付证据。本地 CAD 生成及更完整的设计实现见技术说明。</p><div class="ic-actions"><a class="ic-action ic-action-primary" href="https://github.com/SnowEagle-Kn/industrial-cad-agent-showcase" target="_blank" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-github"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>Public source / 公开源码</a><a class="ic-action" href="https://github.com/SnowEagle-Kn/industrial-cad-agent-showcase/releases/tag/v0.1.0" target="_blank" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-package"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>Replay v0.1.0</a></div></section>
-    </section>
-    <section id="ic-technical" aria-labelledby="ic-technical-tab">
-      <section class="ic-tech-section"><div class="ic-title"><h2>A complete project view</h2><span lang="zh-CN">完整项目的技术说明</span></div><p>Industrial CAD Agent Showcase is a dual-input industrial CAD project implemented in Python. Its concept path provides multi-agent design orchestration, anonymous candidate evaluation, seven-state parameter evidence, and deterministic scene-based visualization. Its drawing path inventories and reviews supported DXF or calibrated vector PDF objects before feature modeling. An OCP/OCCT-based local backend constructs B-Rep geometry for profile extrusion, through circular holes, closed slots, and repeated instances; it generates real STEP, native DXF, and PDF artifacts with file readback checks. Revision-bound confirmations, source-to-feature links, and delivery manifests connect decisions to outputs. These capabilities are supported by implementation and bounded synthetic development cases; the downloadable v0.1.0 package separately provides a deterministic workflow replay.</p><p class="ic-cn" lang="zh-CN">Industrial CAD Agent Showcase 是一个使用 Python 实现的双入口工业 CAD 项目。概念链提供多 Agent 设计编排、匿名候选评选、七态参数证据和确定性的场景驱动可视化；图纸链对支持的 DXF 或经校准的矢量 PDF 对象进行取数和复核，再进入特征建模。本地 OCP/OCCT 后端构造轮廓拉伸、通圆孔、闭合腰槽和重复实例的 B-Rep 几何，生成真实 STEP、原生 DXF 和 PDF，并进行文件回读核对。绑定版本的确认、来源到特征的关联及交付清单连接设计决策和输出。上述能力有实现和限定合成开发案例支撑；另行提供下载的 v0.1.0 包用于确定性工作流回放。</p></section>
-      <section class="ic-tech-section"><h3>Implementation and evidence / 实现与依据</h3><table class="ic-table"><thead><tr><th scope="col">COMPONENT / 组成</th><th scope="col">IMPLEMENTATION / 实现</th></tr></thead><tbody><tr><td>Concept workflow</td><td>Five seats, anonymous packets, scoring and selection handoff<span lang="zh-CN">五席、匿名包、评分与选案交接；依据为编排及校验代码</span></td></tr><tr><td>Scene renderer</td><td>Multi-view PNG, GLB, PDF sheets and HTML<span lang="zh-CN">多视图 PNG、GLB、PDF 图册、HTML；依据为渲染实现</span></td></tr><tr><td>Drawing route</td><td>Source inventory, review binding and development modeling<span lang="zh-CN">原图对象账、复核绑定及开发建模；有合成原图出图样例</span></td></tr><tr><td>Local CAD backend</td><td>Four feature operations, real STEP/DXF/PDF and readback<span lang="zh-CN">四操作、真实 STEP/DXF/PDF 及回读；有代码与实际合成产物</span></td></tr><tr><td>Public package</td><td>Python standard-library replay, tests and dated CI<span lang="zh-CN">Python 标准库回放、测试与有日期的 CI</span></td></tr></tbody></table><p>The modeling scope is a bounded plate-feature subset. Intake covers a declared ASCII DXF R2004 XY subset and calibrated vector PDF workflows. Real drawing tasks retain a review/development gate; full real-user drawing-to-final-delivery acceptance is still outstanding. Fresh host-session orchestration requires host-level execution evidence. Development files require engineering review before manufacturing use.</p><p class="ic-cn" lang="zh-CN">建模范围为限定的板件特征子集；接入覆盖声明的 ASCII DXF R2004 XY 子集和经校准的矢量 PDF 流程。真实图纸任务保留复核/开发门，真实用户原图到最终交付的整链验收仍待完成；新宿主会话编排需要宿主执行证据。开发文件用于制造前须经过工程审查。</p></section>
-      <section class="ic-tech-section"><h3>Real files, inspectable checks / 真实文件与可核检查</h3><table class="ic-table"><thead><tr><th scope="col">OUTPUT / 输出</th><th scope="col">RECORD / 内容</th></tr></thead><tbody><tr><td><code>model.step</code></td><td>3D B-Rep model<span lang="zh-CN">真实三维 B-Rep 模型</span></td></tr><tr><td><code>model.dxf / drawing.dxf</code></td><td>Model/drawing views and native entities<span lang="zh-CN">模型、图纸视图与原生图元</span></td></tr><tr><td><code>drawing.pdf</code></td><td>Readable drawing pages<span lang="zh-CN">可阅读的出图页</span></td></tr><tr><td><code>measurement.json</code></td><td>STEP readback measurements<span lang="zh-CN">STEP 回读量测</span></td></tr><tr><td><code>artifact_manifest.json</code></td><td>Artifact identity, scope and status<span lang="zh-CN">产物身份、范围及状态</span></td></tr></tbody></table><p>Geometry and native drawing checks inspect different properties from hashes. Hashes bind exact files and versions.</p><p class="ic-cn" lang="zh-CN">几何与原生图纸核对检查的属性不同于哈希；哈希用于绑定准确文件和版本。</p></section>
-      <section class="ic-tech-section"><h3>Public v0.1.0 replay / 公开回放包</h3><p>The downloadable package replays fixed synthetic workflows with pre-generated media. Its commands do not call a live LLM or the private CAD backend and do not generate new STEP/DXF/PDF files. Real CAD generation belongs to the broader local implementation described above and is not distributed in this package.</p><p class="ic-cn" lang="zh-CN">当前下载包使用预生成媒体回放固定合成工作流。该包命令不调用实时 LLM 或私有 CAD 后端，也不生成新的 STEP/DXF/PDF 文件。真实 CAD 生成属于上文的完整本地实现，未随此包分发。</p><p>Run with CPython 3.12 from the v0.1.0 source root, keeping <code>cad_agent_showcase/</code>, <code>fixtures/</code>, and <code>examples/</code> together.</p><p class="ic-cn" lang="zh-CN">在 v0.1.0 源码根目录使用 CPython 3.12，保留上述三个目录。</p><pre class="ic-code"><code>python -m cad_agent_showcase demo concept --replay
+
+      <section class="ic-panel" id="ic-agent" aria-labelledby="ic-agent-title">
+        <h2 id="ic-agent-title">Five design seats, one blind review<span class="ic-cn" lang="zh-CN">五席独立设计与盲评</span></h2>
+        <div class="ic-topology">
+          <figure>
+            <svg viewBox="0 0 350 210" role="img" aria-labelledby="ic-topology-title ic-topology-desc">
+              <title id="ic-topology-title">Five-seat blind review topology / 五席盲评拓扑</title>
+              <desc id="ic-topology-desc">The coordinator P supplies a shared revision to five isolated design seats D0–D4. Their submissions pass through a v1.1 neutral evidence projection before reaching J0. P preserves the private mappings.</desc>
+              <path class="ic-svg-path" d="M175 38V52M38 52H312M38 52V70M106 52V70M175 52V70M244 52V70M312 52V70M38 100V113M106 100V113M175 100V126M244 100V113M312 100V113M38 113H312M175 155V177"></path>
+              <rect class="ic-svg-zone" x="101" y="8" width="148" height="30" rx="5"></rect>
+              <text class="ic-svg-label" x="175" y="27">P · Coordinator</text>
+              <rect class="ic-svg-zone" x="14" y="70" width="48" height="30" rx="5"></rect>
+              <rect class="ic-svg-zone" x="82" y="70" width="48" height="30" rx="5"></rect>
+              <rect class="ic-svg-zone" x="151" y="70" width="48" height="30" rx="5"></rect>
+              <rect class="ic-svg-zone" x="220" y="70" width="48" height="30" rx="5"></rect>
+              <rect class="ic-svg-zone" x="288" y="70" width="48" height="30" rx="5"></rect>
+              <text class="ic-svg-label" x="38" y="89">D0</text><text class="ic-svg-label" x="106" y="89">D1</text><text class="ic-svg-label" x="175" y="89">D2</text><text class="ic-svg-label" x="244" y="89">D3</text><text class="ic-svg-label" x="312" y="89">D4</text>
+              <rect class="ic-svg-zone" x="61" y="126" width="228" height="29" rx="5"></rect>
+              <text class="ic-svg-label" x="175" y="145">v1.1 · Neutral evidence packet</text>
+              <rect class="ic-svg-zone" x="101" y="177" width="148" height="27" rx="5"></rect>
+              <text class="ic-svg-label" x="175" y="195">J0 · Blind judge</text>
+            </svg>
+            <figcaption class="ic-caption">D0–D4 share an input revision. J0 receives neutral evidence and a bounded return route.<span class="ic-cn" lang="zh-CN">D0–D4 共享同一输入版本。J0 接收中性证据及限定回传路由。</span></figcaption>
+          </figure>
+          <dl class="ic-roles">
+            <dt><a href="../../skills/wish-cad-frontend/prompts/P-coordinator.md">P · Coordinator / 协调</a></dt>
+            <dd>Owns the neutral brief and private mappings. 保管中性简报和私有映射。</dd>
+            <dt><a href="../../skills/wish-cad-frontend/prompts/D-designer.md">D0–D4 · Designers / 设计席</a></dt>
+            <dd>Develop proposals in separate contexts. 在隔离上下文中独立构思。</dd>
+            <dt><a href="../../skills/wish-cad-frontend/prompts/J0-judge.md">J0 · Judge / 裁判</a></dt>
+            <dd>Reads the projected packet and evaluates evidence. 只读取投影包并评估证据。</dd>
+            <dt><a href="../../skills/wish-cad-frontend/prompts/skeptic.md">Skeptic / 质疑席</a></dt>
+            <dd>Challenges a specific claim with a testable counterexample. 用可检验反例质疑具体判断。</dd>
+          </dl>
+        </div>
+        <section class="ic-block">
+          <h3>Six engineering controls<span class="ic-cn" lang="zh-CN">六项工程护栏</span></h3>
+          <div class="ic-card-list">
+            <details>
+              <summary>Core capability isolation / 核心能力隔离</summary>
+              <p>Seven port operations keep private CAD behind a fixture allowlist. Requests outside public scope return a refusal.<span class="ic-cn" lang="zh-CN">七个端口操作通过夹具白名单隔离私有 CAD。超出公开范围的请求返回拒止。</span></p>
+              <p><a href="../../cad_agent_showcase/ports/core_engine.py">Port contract / 端口契约</a></p>
+            </details>
+            <details>
+              <summary>Readable neutral evidence / 可回读的中性证据</summary>
+              <p>The v1.1 projection rewrites allowed evidence paths and removes identity signals while retaining the engineering claim.<span class="ic-cn" lang="zh-CN">v1.1 重写允许的证据路径，去除身份线索，保留工程判断所需内容。</span></p>
+              <p><a href="../../cad_agent_showcase/governance/neutral_evidence.py">Evidence mapper / 证据映射</a></p>
+            </details>
+            <details>
+              <summary>Score bounds and ranking flips / 区间评分与名次反转</summary>
+              <p>Seven criteria and 128 common weight vertices show when pairwise order can reverse.<span class="ic-cn" lang="zh-CN">七项标准与 128 个共同权重顶点可揭示两案排序何时反转。</span></p>
+              <p><a href="../../cad_agent_showcase/governance/scoring.py">Scoring code / 评分实现</a></p>
+            </details>
+            <details>
+              <summary>Independent engineering readback / 写读独立核对</summary>
+              <p>The local check starts from emitted files and frozen intent. The public replay verifies declared fixture and delivery bytes.<span class="ic-cn" lang="zh-CN">本地独立核对从输出文件和冻结意图出发。公开回放核实声明的夹具与交付字节。</span></p>
+              <p><a href="../adr/04-independent-readback.md">Readback design / 回读设计</a></p>
+            </details>
+            <details>
+              <summary>Revision and handoff evidence / 版本与交接证据</summary>
+              <p>A revised input invalidates affected approvals. Outbox, send, consume and ACK each have distinct evidence.<span class="ic-cn" lang="zh-CN">输入改版使受影响的确认失效。入箱、发送、消费和 ACK 各有证据。</span></p>
+              <p><a href="../../cad_agent_showcase/orchestration/session_handoff.py">Handoff code / 交接实现</a></p>
+            </details>
+            <details>
+              <summary>Contracts, states and gates / 契约、状态与门控</summary>
+              <p>Schema checks, 25 states, and five verification layers serve distinct purposes. G1 checks data and G2 checks an independent authorization event.<span class="ic-cn" lang="zh-CN">Schema 校验、25 态机与五层验证承担不同职责。G1 核工程数据，G2 核独立授权事件。</span></p>
+              <p><a href="../../cad_agent_showcase/orchestration/gating.py">Gate implementation / 门控实现</a></p>
+            </details>
+          </div>
+        </section>
+        <section class="ic-block">
+          <h3>Asset boundaries<span class="ic-cn" lang="zh-CN">资产分层</span></h3>
+          <table class="ic-table">
+            <thead><tr><th scope="col">Tier / 层</th><th scope="col">Contents and distribution / 内容与分发边界</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">A · Private</th><td>Calibrated drawing intake, parameter bridge, OCCT B-Rep, native sheet output, independent readback, scene rendering.<span class="ic-cn" lang="zh-CN">原图标定取数、参数桥、OCCT B-Rep、原生出图、独立回读与场景渲染留在私有层。</span></td></tr>
+              <tr><th scope="row">B · Source display</th><td>Sanitized governance source, skill and role contracts, 12 schemas plus one runtime policy and acceptance checklist.<span class="ic-cn" lang="zh-CN">脱敏治理源码、Skill 与角色契约、12 份 Schema、一份运行策略及验收清单。</span></td></tr>
+              <tr><th scope="row">C · Source display</th><td>Lifecycle, gates, handoff and delivery, with a seven-operation port and an allowlisted replay engine.<span class="ic-cn" lang="zh-CN">生命周期、门控、交接、交付，加上七操作端口和白名单回放引擎。</span></td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="ic-block">
+          <h3>Architecture decisions<span class="ic-cn" lang="zh-CN">工程决策记录</span></h3>
+          <ol class="ic-adr">
+            <li><a href="../adr/01-source-derived-spine-and-ports.md">Source-derived spine and ports / 同源骨架与端口隔离</a></li>
+            <li><a href="../adr/02-blind-review-and-neutral-evidence.md">Blind review and neutral evidence / 盲评与中性证据</a></li>
+            <li><a href="../adr/03-interval-scoring-and-sensitivity.md">Interval scoring and sensitivity / 区间评分与敏感性</a></li>
+            <li><a href="../adr/04-independent-readback.md">Independent readback / 写读独立核对</a></li>
+            <li><a href="../adr/05-revision-binding-and-handoff.md">Revision binding and handoff / 版本绑定与交接</a></li>
+            <li><a href="../adr/06-schema-state-and-verification.md">Schemas, states and verification / 契约、状态与分层验证</a></li>
+          </ol>
+        </section>
+      </section>
+
+      <section class="ic-panel" id="ic-technical" aria-labelledby="ic-technical-title">
+        <h2 id="ic-technical-title">Run the public workflow<span class="ic-cn" lang="zh-CN">运行公开工作流</span></h2>
+        <p>Run these commands at the source root with Python 3.12. 使用 Python 3.12，在源码根目录执行。</p>
+        <pre class="ic-code"><code>python -m cad_agent_showcase demo concept --replay
 python -m cad_agent_showcase demo drawing --replay
-python -m cad_agent_showcase demo confirmation-mutation --replay</code></pre><table class="ic-table"><thead><tr><th scope="col">REPLAY OUTPUT / 回放输出</th><th scope="col">MEANING / 含义</th></tr></thead><tbody><tr><td><code>manifest.json</code></td><td>Revision, file bindings and expected SHA-256<span lang="zh-CN">版本、文件绑定及预期 SHA-256</span></td></tr><tr><td><code>readback.json</code></td><td>Fixture/parameter summaries, unverified items and a prior media-check summary<span lang="zh-CN">样例/参数摘要、未验证项及前置媒体校验摘要</span></td></tr><tr><td><code>CLI: data.artifact_verification</code></td><td>Final re-hash results, file lists and counts<span lang="zh-CN">最终哈希复算结果、名单及计数</span></td></tr><tr><td><code>events / confirmation</code></td><td>Simulated events and revision binding<span lang="zh-CN">模拟事件和版本绑定</span></td></tr></tbody></table></section>
-      <section class="ic-tech-section"><h3>Public release evidence / 公开版本依据</h3><p>The dated v0.1.0 release records 26 unit tests and three replay commands on each of Windows Server 2025 / CPython 3.12.10 and Ubuntu 24.04.5 / CPython 3.12.16, on November 14, 2026, for commit <code>25d24914633c38b3cd4d981af00c941a5db3a030</code>.</p><p class="ic-cn" lang="zh-CN">有日期的 v0.1.0 记录载明，2026-11-14 对上述提交在这两个平台上各执行 26 项单元测试及 3 条回放命令。结果限于该公开源码及回放范围。</p><p>That release received same-model, separate-context AI technical review of the public replay scope; it does not establish full-project engineering acceptance.</p><p class="ic-cn" lang="zh-CN">该版本由同模型、独立上下文 AI 技术审查公开回放范围；这不等于整项目工程验收。</p><div class="ic-actions"><a class="ic-action" href="https://github.com/SnowEagle-Kn/industrial-cad-agent-showcase/actions/runs/43555129426" target="_blank" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-workflow"><rect width="8" height="8" x="3" y="3" rx="2"></rect><path d="M7 11v4a2 2 0 0 0 2 2h4"></path><rect width="8" height="8" x="13" y="13" rx="2"></rect></svg>Release CI / 发布检查</a></div></section>
-      <section class="ic-tech-section"><h3>Drawing detail / 图纸细节</h3><p>The 100-hole and 256-hole development cases contain 303 and 771 native DXF dimensions respectively. A2/A1/A0 layouts preserve 1:1 orthographic views and support pagination; selected isometric views use labeled scales. The annotation implementation covers declared angle, tolerance, datum, surface roughness, section, detail-callout and title-block data.</p><p class="ic-cn" lang="zh-CN">100 孔和 256 孔开发案例分别包含 303 和 771 个原生 DXF 尺寸。A2/A1/A0 排版保持正交视图 1:1 并支持分页，选定等轴测视图标出比例。标注实现涵盖声明的角度、公差、基准、表面粗糙度、剖面、详图指示和标题栏数据。</p></section>
-      <details><summary class="cursor-interaction">Replay CLI outcomes / 回放命令结果</summary><p>Exit 0: successful replay or expected scenario match; mutation checks can include expected refusals. Exit 1: explicit refusal. Exit 2: input/usage error, possibly usage text without JSON. Exit 3: injected engine failure. Confirmation events use <code>replay_simulated</code>.</p><p lang="zh-CN">0 为回放成功或预期场景符合，变更检查可包含预期拒绝；1 为明确拒绝，2 为输入/用法错误且可能只有 usage 无 JSON，3 为注入引擎失败。确认事件使用 <code>replay_simulated</code>。</p></details>
-      <section class="ic-tech-section"><h3>Source access and rights / 源码与权利</h3><p>Public source display with rights reserved, subject to law, applicable platform terms and other explicit agreements. No standard open-source license is granted. GitHub viewing, forking and applicable platform rights remain unaffected. See the <a href="https://github.com/SnowEagle-Kn/industrial-cad-agent-showcase/blob/25d24914633c38b3cd4d981af00c941a5db3a030/LICENSE-PENDING.md" target="_blank" rel="noopener noreferrer">source-display terms</a>.</p><p class="ic-cn" lang="zh-CN">公开源码展示、权利保留，受法律、适用平台条款及其他明确协议约束；未授予标准开源许可。GitHub 查看、fork 及适用平台权利不受影响，详见源码展示条款。</p></section>
-    </section>
-    <footer class="ic-footer"><span>Industrial CAD Agent Showcase<br><span lang="zh-CN">工业 CAD 双入口智能设计与制图</span></span><span>Public replay v0.1.0<br>Source display · Rights reserved</span></footer>
+python -m cad_agent_showcase demo confirmation-mutation --replay
+python -m cad_agent_showcase demo eval --replay
+python -m cad_agent_showcase demo gates --replay
+python -m cad_agent_showcase verify-boundary
+python contracts/verify_checklist.py
+python -m unittest discover</code></pre>
+        <table class="ic-table">
+          <thead><tr><th scope="col">Exit / 退出码</th><th scope="col">Meaning / 语义</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><code>0</code></th><td>Requested scenario completed or expected checks matched. 场景完成或检查符合预期。</td></tr>
+            <tr><th scope="row"><code>1</code></th><td>Refusal or disclosure-scan finding. 拒止或分发扫描有发现。</td></tr>
+            <tr><th scope="row"><code>2</code></th><td>Input, usage or fixture-integrity error. 输入、用法或夹具完整性错误。</td></tr>
+            <tr><th scope="row"><code>3</code></th><td>Replay engine or stage failure. 回放引擎或阶段失败。</td></tr>
+          </tbody>
+        </table>
+        <section class="ic-block">
+          <h3>Contracts and checks<span class="ic-cn" lang="zh-CN">契约与检查</span></h3>
+          <p>The repository carries <strong>12 Draft 2020-12 schemas and one runtime policy</strong>. All 72 acceptance items have status <code>NOT_RUN</code>. The structural check verifies the checklist and coverage records.<span class="ic-cn" lang="zh-CN">仓库包含 <strong>12 份 Draft 2020-12 Schema 和一份运行策略</strong>。72 项验收条目全部为 <code>NOT_RUN</code>。结构核验检查清单与覆盖记录。</span></p>
+          <p><a href="../../contracts/acceptance-checklist-72.json">Checklist / 清单</a> · <a href="../../contracts/requirements-coverage.json">Coverage / 覆盖</a> · <a href="../../contracts/cognition/carrier-and-anonymization-policy.json">Runtime policy / 运行策略</a></p>
+          <p>The workflow config uses Windows and Ubuntu with Python 3.12. Consult GitHub Actions for the commit in use.<span class="ic-cn" lang="zh-CN">CI 配置使用 Windows 和 Ubuntu 上的 Python 3.12。运行状态请按所用提交在 GitHub Actions 查看。</span></p>
+          <p><a href="../../.github/workflows/ci.yml">Workflow configuration / CI 配置</a> · <a href="https://github.com/SnowEagle-Kn/industrial-cad-agent-showcase/actions">Commit checks / 提交检查</a> · <a href="../../tests/test_disclosure_boundary.py">Disclosure test / 分发边界测试</a></p>
+        </section>
+        <section class="ic-block">
+          <h3>Rights and engineering limits<span class="ic-cn" lang="zh-CN">权利与工程边界</span></h3>
+          <p>Source display with rights reserved, subject to applicable law, platform terms and explicit agreements. The public package covers synthetic inputs, simulated confirmations and pre-generated media. Live agents, production CAD generation, real-user drawing processing and manufacturing approval are outside that scope.<span class="ic-cn" lang="zh-CN">源码展示、权利保留，受适用法律、平台条款和明确协议约束。公开包限合成输入、模拟确认和预生成媒体。实时 Agent、生产用 CAD 出图、真实用户图纸处理及制造批准在此范围之外。</span></p>
+          <p>The engineering flags <code>verified_truth</code>, <code>engineering_approval</code>, <code>can_enter_p2</code>, and <code>production_approved</code> stay <code>false</code>.<span class="ic-cn" lang="zh-CN">上述四个工程标记始终为 <code>false</code>。</span></p>
+          <p><a href="../../LICENSE-PENDING.md">Source-display terms / 源码展示条款</a> · <a href="../../RIGHTS-AND-SOURCES.md">Rights and sources / 权利与来源</a> · <a href="../architecture.md">Public architecture / 公开架构</a></p>
+        </section>
+      </section>
+    </main>
+    <footer class="ic-footer"><span>Industrial CAD Agent Showcase</span><span>Source display · Rights reserved / 源码展示 · 权利保留</span></footer>
   </div>
-  <script>
-    (() => {
-      const root = document.getElementById('cad-showcase-v12');
-      const tabs = [...root.querySelectorAll('[role="tab"]')];
-      const examples = [...root.querySelectorAll('[data-example]')];
-      const state = { section:'ic-overview', example:'drawing' };
-      root.classList.add('ic-enhanced');
-      root.querySelector('.ic-tabs').setAttribute('role','tablist');
-      root.querySelectorAll('#ic-overview, #ic-technical').forEach(panel => panel.setAttribute('role','tabpanel'));
-      function render() {
-        tabs.forEach(tab => {
-          const selected = tab.getAttribute('aria-controls') === state.section;
-          tab.setAttribute('aria-selected',String(selected));
-          root.querySelector('#' + tab.getAttribute('aria-controls')).hidden = !selected;
-        });
-        examples.forEach(button => button.setAttribute('aria-pressed',String(button.dataset.example === state.example)));
-        root.querySelectorAll('[data-example-panel]').forEach(panel => { panel.hidden = panel.dataset.examplePanel !== state.example; });
-      }
-      tabs.forEach((tab,index) => {
-        tab.addEventListener('click',() => { state.section = tab.getAttribute('aria-controls'); render(); });
-        tab.addEventListener('keydown',event => {
-          if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
-          event.preventDefault();
-          const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
-          tabs[next].click(); tabs[next].focus();
-        });
-      });
-      examples.forEach(button => button.addEventListener('click',() => { state.example = button.dataset.example; render(); }));
-      render();
-    })();
-  </script>
 </div>
+
+<script>
+  (() => {
+    const root = document.getElementById('cad-showcase-v12');
+    const tabList = root.querySelector('.ic-tabs');
+    const tabs = [...tabList.querySelectorAll('.ic-tab')];
+    const panels = tabs.map(tab => document.getElementById(tab.getAttribute('aria-controls')));
+    const examples = [...root.querySelectorAll('[data-example]')];
+    const figures = [...root.querySelectorAll('[data-example-panel]')];
+
+    function selectTab(index) {
+      tabs.forEach((tab, item) => {
+        const selected = item === index;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+        panels[item].hidden = !selected;
+      });
+    }
+
+    function selectExample(name) {
+      examples.forEach(button => {
+        button.setAttribute('aria-pressed', String(button.dataset.example === name));
+      });
+      figures.forEach(figure => { figure.hidden = figure.dataset.examplePanel !== name; });
+    }
+
+    tabList.setAttribute('role', 'tablist');
+    tabs.forEach((tab, index) => {
+      tab.setAttribute('role', 'tab');
+      const panel = panels[index];
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', tab.id);
+      panel.tabIndex = 0;
+
+      tab.addEventListener('click', () => selectTab(index));
+      tab.addEventListener('keydown', event => {
+        const next = {
+          ArrowLeft: (index - 1 + tabs.length) % tabs.length,
+          ArrowRight: (index + 1) % tabs.length,
+          Home: 0,
+          End: tabs.length - 1
+        }[event.key];
+        if (next === undefined) return;
+        event.preventDefault();
+        selectTab(next);
+        tabs[next].focus();
+      });
+    });
+    examples.forEach(button => button.addEventListener('click', () => selectExample(button.dataset.example)));
+
+    const initial = panels.findIndex(panel => '#' + panel.id === window.location.hash);
+    selectTab(Math.max(initial, 0));
+    selectExample(examples[0].dataset.example);
+    root.classList.add('ic-enhanced');
+  })();
+</script>
 </body>
 </html>

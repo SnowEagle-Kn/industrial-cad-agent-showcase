@@ -1,0 +1,218 @@
+{
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "wishcad.content-check.v1"
+    },
+    "binding": {
+      "type": "object",
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "brief_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_manifest_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "requirements_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rules_revision": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "task_id",
+        "run_id",
+        "revision",
+        "brief_sha256",
+        "source_manifest_sha256",
+        "requirements_revision",
+        "rules_revision"
+      ],
+      "additionalProperties": false
+    },
+    "stage": {
+      "enum": [
+        "PRESELECTION",
+        "POSTSELECTION"
+      ]
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "process_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "delivery_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "artifacts": {
+      "type": "object",
+      "properties": {
+        "layout_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "scene_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "view_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "view_id",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "layout_sha256",
+        "scene_sha256",
+        "images"
+      ],
+      "additionalProperties": false
+    },
+    "reader": {
+      "type": "object",
+      "properties": {
+        "source_kind": {
+          "enum": [
+            "MODEL_AUTHOR",
+            "MODEL_NONAUTHOR",
+            "HUMAN",
+            "UNKNOWN"
+          ]
+        },
+        "executor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_or_session": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "source_kind",
+        "executor",
+        "model_or_session"
+      ],
+      "additionalProperties": false
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "applicable": {
+            "type": "boolean"
+          },
+          "view_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "state_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "feature_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "result": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "INCOMPLETE",
+              "INDETERMINATE"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "item_id",
+          "applicable",
+          "view_ids",
+          "state_ids",
+          "feature_ids",
+          "result",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema",
+    "binding",
+    "stage",
+    "candidate_id",
+    "process_sha256",
+    "delivery_sha256",
+    "artifacts",
+    "reader",
+    "items"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:wishcad:c01-r2:content-record.schema.json"
+}

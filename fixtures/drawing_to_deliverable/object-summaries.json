@@ -1,0 +1,216 @@
+{
+  "plate-demo-mutated.dxf": {
+    "circles": [
+      {
+        "center": [
+          20.0,
+          20.0
+        ],
+        "radius": 3.0
+      },
+      {
+        "center": [
+          110.0,
+          20.0
+        ],
+        "radius": 3.0
+      },
+      {
+        "center": [
+          20.0,
+          60.0
+        ],
+        "radius": 3.0
+      },
+      {
+        "center": [
+          110.0,
+          60.0
+        ],
+        "radius": 3.0
+      }
+    ],
+    "entities": {
+      "CIRCLE": 4,
+      "LINE": 4,
+      "TEXT": 2
+    },
+    "extents_mm": {
+      "height": 80.0,
+      "width": 130.0
+    },
+    "lines": [
+      {
+        "end": [
+          130.0,
+          0.0
+        ],
+        "start": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          130.0,
+          80.0
+        ],
+        "start": [
+          130.0,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          0.0,
+          80.0
+        ],
+        "start": [
+          130.0,
+          80.0
+        ]
+      },
+      {
+        "end": [
+          0.0,
+          0.0
+        ],
+        "start": [
+          0.0,
+          80.0
+        ]
+      }
+    ],
+    "texts": [
+      {
+        "height": 4.0,
+        "position": [
+          65.0,
+          -8.0
+        ],
+        "text": "130"
+      },
+      {
+        "height": 4.0,
+        "position": [
+          -12.0,
+          40.0
+        ],
+        "text": "80"
+      }
+    ],
+    "unknown_entities": [
+      {
+        "handle": "40",
+        "type": "SPLINE"
+      }
+    ]
+  },
+  "plate-demo.dxf": {
+    "circles": [
+      {
+        "center": [
+          20.0,
+          20.0
+        ],
+        "radius": 3.0
+      },
+      {
+        "center": [
+          100.0,
+          20.0
+        ],
+        "radius": 3.0
+      },
+      {
+        "center": [
+          20.0,
+          60.0
+        ],
+        "radius": 3.0
+      },
+      {
+        "center": [
+          100.0,
+          60.0
+        ],
+        "radius": 3.0
+      }
+    ],
+    "entities": {
+      "CIRCLE": 4,
+      "LINE": 4,
+      "TEXT": 2
+    },
+    "extents_mm": {
+      "height": 80.0,
+      "width": 120.0
+    },
+    "lines": [
+      {
+        "end": [
+          120.0,
+          0.0
+        ],
+        "start": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          120.0,
+          80.0
+        ],
+        "start": [
+          120.0,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          0.0,
+          80.0
+        ],
+        "start": [
+          120.0,
+          80.0
+        ]
+      },
+      {
+        "end": [
+          0.0,
+          0.0
+        ],
+        "start": [
+          0.0,
+          80.0
+        ]
+      }
+    ],
+    "texts": [
+      {
+        "height": 4.0,
+        "position": [
+          60.0,
+          -8.0
+        ],
+        "text": "120"
+      },
+      {
+        "height": 4.0,
+        "position": [
+          -12.0,
+          40.0
+        ],
+        "text": "80"
+      }
+    ],
+    "unknown_entities": [
+      {
+        "handle": "40",
+        "type": "SPLINE"
+      }
+    ]
+  }
+}

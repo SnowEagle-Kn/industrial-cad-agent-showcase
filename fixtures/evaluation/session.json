@@ -1,0 +1,120 @@
+{
+  "run_id": "REPLAY-EVAL-01",
+  "revision": "r1",
+  "coordinator": "REPLAY-COORDINATOR",
+  "judge": "REPLAY-JUDGE",
+  "designers": {
+    "D0": "SyntheticAuthor0",
+    "D1": "SyntheticAuthor1",
+    "D2": "SyntheticAuthor2",
+    "D3": "SyntheticAuthor3",
+    "D4": "SyntheticAuthor4"
+  },
+  "assignments": {
+    "D0": "K03",
+    "D1": "K01",
+    "D2": "K05",
+    "D3": "K02",
+    "D4": "K04"
+  },
+  "candidate": {
+    "schema": "wishcad.candidate.v1.1",
+    "run_id": "REPLAY-EVAL-01",
+    "quality": [
+      {
+        "id": "Q1",
+        "text": "Use the neutral observation to check the replay explanation."
+      }
+    ],
+    "parameters": [
+      {
+        "parameter_id": "clearance_status",
+        "value": null,
+        "evidence_status": "UNKNOWN",
+        "role": "interface",
+        "source_ref": null
+      }
+    ],
+    "consumed_feature_ids": [],
+    "decision_records": [
+      {
+        "decision_id": "DECISION-1",
+        "decision": "Keep the recorded design assumptions visible.",
+        "requirement_ids": [],
+        "feature_ids": [],
+        "source_refs": [],
+        "mechanism": "The synthetic observation separates description from evidence.",
+        "costs": [],
+        "failure_conditions": [
+          "The review observation is unavailable."
+        ],
+        "verification": {
+          "method": "Read the referenced observation.",
+          "criterion": null,
+          "source_refs": []
+        }
+      }
+    ],
+    "critical_unknowns": [],
+    "evidence_refs": {
+      "layout": null,
+      "artifacts": []
+    }
+  },
+  "selection": {
+    "actor": "user",
+    "action": "select_candidate",
+    "evidence_type": "replay_simulated",
+    "run_id": "REPLAY-EVAL-01",
+    "revision": "r1",
+    "event_id": "REPLAY-CHOICE-1",
+    "selected_candidate_id": "K02"
+  },
+  "score_points": {
+    "K01": {
+      "C1": 4,
+      "C2": 4,
+      "C3": 3,
+      "C4": 3,
+      "C5": 3,
+      "C6": 3,
+      "C7": 3
+    },
+    "K02": {
+      "C1": 3,
+      "C2": 4,
+      "C3": 4,
+      "C4": 3,
+      "C5": 3,
+      "C6": 4,
+      "C7": 3
+    },
+    "K03": {
+      "C1": 5,
+      "C2": 4,
+      "C3": 4,
+      "C4": 4,
+      "C5": 4,
+      "C6": 4,
+      "C7": 4
+    },
+    "K04": {
+      "C1": 3,
+      "C2": 2,
+      "C3": 4,
+      "C4": 3,
+      "C5": 3,
+      "C6": 3,
+      "C7": 4
+    },
+    "K05": {
+      "C1": 3,
+      "C2": 4,
+      "C3": 2,
+      "C4": 3,
+      "C5": 4,
+      "C6": 3,
+      "C7": 4
+    }
+  }
+}

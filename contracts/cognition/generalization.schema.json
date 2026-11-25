@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:wishcad:generalization-cognition:1.1",
+  "title": "Goal references, explicitly unproven causal hypotheses and authorized change scope",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "wishcad.generalization.v1.1"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "goal_requirement_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "success_observations": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:wishcad:cognition:common:1#/$defs/statement"
+      }
+    },
+    "causal_hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hypothesis_id": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/id"
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_status": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/state"
+          },
+          "source_refs": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/source_refs"
+          },
+          "verification": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/verification"
+          }
+        },
+        "required": [
+          "hypothesis_id",
+          "statement",
+          "evidence_status",
+          "source_refs",
+          "verification"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "change_scope": {
+      "type": "object",
+      "properties": {
+        "allowed_object_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "allowed_feature_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "authority_refs": {
+          "$ref": "urn:wishcad:cognition:common:1#/$defs/source_refs"
+        },
+        "unresolved": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "allowed_object_ids",
+        "allowed_feature_ids",
+        "authority_refs",
+        "unresolved"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema",
+    "run_id",
+    "revision",
+    "goal_requirement_ids",
+    "success_observations",
+    "causal_hypotheses",
+    "change_scope"
+  ],
+  "additionalProperties": false
+}

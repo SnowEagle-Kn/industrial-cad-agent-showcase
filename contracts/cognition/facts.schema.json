@@ -1,0 +1,402 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:wishcad:facts-objects:1.2",
+  "title": "Closed projection of added facts fields; parameter and interface checks also apply",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "wishcad.facts.v1.2"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_manifest_ref": {
+      "$ref": "urn:wishcad:cognition:common:1#/$defs/source_ref"
+    },
+    "reference_frames": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "frame_id": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/id"
+          },
+          "kind": {
+            "enum": [
+              "SOURCE_VIEW",
+              "OBJECT_LOCAL",
+              "WORLD"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_refs": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/source_refs"
+          },
+          "transform_to_parent": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/transform"
+          }
+        },
+        "required": [
+          "frame_id",
+          "kind",
+          "description",
+          "source_refs",
+          "transform_to_parent"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "object_id": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/id"
+          },
+          "role": {
+            "enum": [
+              "KEEP",
+              "DESIGN",
+              "CONTEXT"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reference_frame_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "feature_id": {
+                  "$ref": "urn:wishcad:cognition:common:1#/$defs/id"
+                },
+                "property": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "$ref": "urn:wishcad:cognition:common:1#/$defs/scalar"
+                },
+                "unit": {
+                  "$ref": "urn:wishcad:cognition:common:1#/$defs/unit"
+                },
+                "evidence_status": {
+                  "$ref": "urn:wishcad:cognition:common:1#/$defs/state"
+                },
+                "value_role": {
+                  "$ref": "urn:wishcad:cognition:common:1#/$defs/value_role"
+                },
+                "source_refs": {
+                  "$ref": "urn:wishcad:cognition:common:1#/$defs/source_refs"
+                },
+                "reference_frame_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                },
+                "critical_for": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true
+                },
+                "preserve": {
+                  "type": "boolean"
+                },
+                "mutable": {
+                  "type": "boolean"
+                },
+                "change_authority_refs": {
+                  "$ref": "urn:wishcad:cognition:common:1#/$defs/source_refs"
+                },
+                "conflict_values": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "$ref": "urn:wishcad:cognition:common:1#/$defs/scalar"
+                      },
+                      "source_refs": {
+                        "$ref": "urn:wishcad:cognition:common:1#/$defs/source_refs"
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "source_refs"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "selection_reason": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                },
+                "adoption_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "$ref": "urn:wishcad:cognition:common:1#/$defs/source_ref"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "feature_id",
+                "property",
+                "value",
+                "unit",
+                "evidence_status",
+                "value_role",
+                "source_refs",
+                "reference_frame_id",
+                "critical_for",
+                "preserve",
+                "mutable",
+                "change_authority_refs",
+                "conflict_values",
+                "selection_reason",
+                "adoption_ref"
+              ],
+              "additionalProperties": false,
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "evidence_status": {
+                        "const": "UNKNOWN"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "value": {
+                        "type": "null"
+                      },
+                      "conflict_values": {
+                        "maxItems": 0
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "evidence_status": {
+                        "const": "CONFLICT"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "value": {
+                        "type": "null"
+                      },
+                      "conflict_values": {
+                        "minItems": 2
+                      }
+                    }
+                  },
+                  "else": {
+                    "properties": {
+                      "conflict_values": {
+                        "maxItems": 0
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "evidence_status": {
+                        "enum": [
+                          "USER_FACT",
+                          "OBSERVED",
+                          "ESTIMATED",
+                          "DERIVED",
+                          "ASSUMED"
+                        ]
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "source_refs": {
+                        "minItems": 1
+                      },
+                      "value": {
+                        "not": {
+                          "type": "null"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "mutable": {
+                        "const": true
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "change_authority_refs": {
+                        "minItems": 1
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "value_role": {
+                        "const": "DESIGN_CHOICE"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "selection_reason": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "value_role": {
+                        "const": "DESIGN_CHOICE"
+                      },
+                      "evidence_status": {
+                        "const": "USER_FACT"
+                      }
+                    },
+                    "required": [
+                      "value_role",
+                      "evidence_status"
+                    ]
+                  },
+                  "then": {
+                    "properties": {
+                      "adoption_ref": {
+                        "allOf": [
+                          {
+                            "$ref": "urn:wishcad:cognition:common:1#/$defs/source_ref"
+                          },
+                          {
+                            "properties": {
+                              "locator": {
+                                "properties": {
+                                  "kind": {
+                                    "const": "user_event"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "object_id",
+          "role",
+          "name",
+          "reference_frame_id",
+          "features"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "role": {
+                  "enum": [
+                    "KEEP",
+                    "CONTEXT"
+                  ]
+                }
+              },
+              "required": [
+                "role"
+              ]
+            },
+            "then": {
+              "properties": {
+                "features": {
+                  "items": {
+                    "if": {
+                      "properties": {
+                        "value_role": {
+                          "const": "DESIGN_CHOICE"
+                        }
+                      },
+                      "required": [
+                        "value_role"
+                      ]
+                    },
+                    "then": {
+                      "properties": {
+                        "mutable": {
+                          "const": true
+                        },
+                        "change_authority_refs": {
+                          "minItems": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "run_id",
+    "revision",
+    "source_manifest_ref",
+    "reference_frames",
+    "objects"
+  ],
+  "additionalProperties": false
+}

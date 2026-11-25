@@ -1,9 +1,10 @@
 # Portability
 
-The public `v0.1.0` release uses **source-first replay**: a GitHub source repository
-and tag-matched source snapshot, with commands run from the source root. Keep
-the package, `fixtures/` and `examples/` together. CPython 3.12 and the standard
-library are sufficient for the replay commands and tests.
+Run the v0.2.0 candidate from a Git checkout or a complete source snapshot.
+Keep the package, `fixtures/`, `examples/` and `contracts/` together. The
+README commands use CPython 3.12 and the standard library. A Git checkout can
+also test index-aware enumeration. Historical evidence below retains its
+v0.1.0 commit bindings.
 
 Distribution mode: `source-display-no-open-source-license`. Rights are reserved
 except as provided by law, applicable platform terms or another explicit
@@ -72,12 +73,16 @@ From the source root:
 python -m cad_agent_showcase demo concept --replay
 python -m cad_agent_showcase demo drawing --replay
 python -m cad_agent_showcase demo confirmation-mutation --replay
+python -m cad_agent_showcase demo eval --replay
+python -m cad_agent_showcase demo gates --replay
+python -m cad_agent_showcase verify-boundary
+python contracts/verify_checklist.py
 python -m unittest discover -s tests -t .
 ```
 
-The suite contains 26 tests. Both entries, confirmation mutation and the three
-refusals must retain their outcomes in the exact-commit release checks. A
-source-copy result is not sufficient evidence for all Git checkout settings.
+Release checks exercise both original entries, confirmation mutation, the
+new blind evaluation and gate replays, and refusal of outside input. The
+Windows and Ubuntu CI results are recorded against the exact candidate commit.
 
 ## Historical Git and CI limits found during release planning
 

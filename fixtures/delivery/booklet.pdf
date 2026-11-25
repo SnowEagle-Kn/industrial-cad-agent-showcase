@@ -1,0 +1,107 @@
+%PDF-1.4
+%“Œ‹ž ReportLab Generated PDF document (opensource)
+1 0 obj
+<<
+/F1 2 0 R /F2 3 0 R
+>>
+endobj
+2 0 obj
+<<
+/BaseFont /Helvetica /Encoding /WinAnsiEncoding /Name /F1 /Subtype /Type1 /Type /Font
+>>
+endobj
+3 0 obj
+<<
+/BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font
+>>
+endobj
+4 0 obj
+<<
+/Contents 8 0 R /MediaBox [ 0 0 612 792 ] /Parent 7 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 /Trans <<
+
+>> 
+  /Type /Page
+>>
+endobj
+5 0 obj
+<<
+/PageMode /UseNone /Pages 7 0 R /Type /Catalog
+>>
+endobj
+6 0 obj
+<<
+/Author (Industrial CAD Agent Showcase) /CreationDate (D:20000101000000+00'00') /Creator (anonymous) /Keywords () /ModDate (D:20000101000000+00'00') /Producer (ReportLab PDF Library - \(opensource\)) 
+  /Subject (Public fixed replay evidence) /Title (Synthetic CAD Replay Booklet) /Trapped /False
+>>
+endobj
+7 0 obj
+<<
+/Count 1 /Kids [ 4 0 R ] /Type /Pages
+>>
+endobj
+8 0 obj
+<<
+/Length 1563
+>>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+.121569 .219608 .337255 rg
+n 0 653 612 139 re f*
+1 1 1 rg
+BT /F2 26 Tf 31.2 TL ET
+BT 1 0 0 1 54 720 Tm (Synthetic CAD Replay) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 54 690 Tm (Public delivery booklet) Tj T* ET
+.619608 .188235 .141176 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 606 Tm (DEMO / REPLAY - SYNTHETIC FIXTURE - NOT FOR MANUFACTURING) Tj T* ET
+.090196 .137255 .184314 rg
+BT /F2 15 Tf 18 TL ET
+BT 1 0 0 1 54 551 Tm (Replay inputs) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 523 Tm (The concept and drawing commands use the committed synthetic examples.) Tj T* ET
+BT 1 0 0 1 54 502 Tm (The drawing summary and visual assets were recorded before replay.) Tj T* ET
+BT /F2 15 Tf 18 TL ET
+BT 1 0 0 1 54 455 Tm (Delivery evidence) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 427 Tm (The overview, booklet, preview and notes are bound to a manifest.) Tj T* ET
+BT 1 0 0 1 54 406 Tm (The archive holds byte-identical copies of those four files and the manifest.) Tj T* ET
+BT 1 0 0 1 54 385 Tm (Readback checks the revision binding, file sizes and SHA-256 values.) Tj T* ET
+BT /F2 15 Tf 18 TL ET
+BT 1 0 0 1 54 338 Tm (Engineering status) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 310 Tm (Engineering approval and production approval remain false.) Tj T* ET
+BT 1 0 0 1 54 289 Tm (The replay records do not verify geometry or manufacturing suitability.) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+.262745 .333333 .423529 rg
+BT 1 0 0 1 54 52 Tm (Industrial CAD Agent Showcase) Tj T* ET
+BT 1 0 0 1 552.44 52 Tm (1) Tj T* ET
+ 
+endstream
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000061 00000 n 
+0000000102 00000 n 
+0000000209 00000 n 
+0000000321 00000 n 
+0000000514 00000 n 
+0000000582 00000 n 
+0000000900 00000 n 
+0000000959 00000 n 
+trailer
+<<
+/ID 
+[<36a88fd9e5e085de9d543b986153e63d><36a88fd9e5e085de9d543b986153e63d>]
+% ReportLab generated PDF document -- digest (opensource)
+
+/Info 6 0 R
+/Root 5 0 R
+/Size 9
+>>
+startxref
+2573
+%%EOF

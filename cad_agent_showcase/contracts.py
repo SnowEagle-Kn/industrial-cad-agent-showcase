@@ -5,6 +5,8 @@ This module is the only place that defines the public vocabulary.  The demo
 runs in replay mode only; every envelope says so.
 """
 
+from types import MappingProxyType
+
 ENVELOPE_SCHEMA = "cad_agent_showcase.envelope.v1"
 MANIFEST_SCHEMA = "cad_agent_showcase.demo_manifest.v1"
 EVENT_SCHEMA = "cad_agent_showcase.confirmation_event.v1"
@@ -67,6 +69,8 @@ CODE_MISSING_PARAMETERS = "MISSING_PARAMETERS"
 CODE_PARAMETER_OUT_OF_RANGE = "PARAMETER_OUT_OF_RANGE"
 CODE_UNSUPPORTED_FORMAT = "UNSUPPORTED_FORMAT"
 CODE_UNSUPPORTED_REPLAY_INPUT = "UNSUPPORTED_REPLAY_INPUT"
+CODE_CORE_CAPABILITY_HIDDEN = "CORE_CAPABILITY_HIDDEN_IN_PUBLIC_REPO"
+CODE_DISCLOSURE_BOUNDARY = "DISCLOSURE_BOUNDARY_VIOLATION"
 CODE_CONFIRMATION_REQUIRED = "CONFIRMATION_REQUIRED"
 CODE_CONFIRMATION_INVALIDATED = "CONFIRMATION_INVALIDATED"
 CODE_CONFIRMATION_REUSED = "CONFIRMATION_REUSED"
@@ -90,6 +94,8 @@ KNOWN_CODES = (
     CODE_PARAMETER_OUT_OF_RANGE,
     CODE_UNSUPPORTED_FORMAT,
     CODE_UNSUPPORTED_REPLAY_INPUT,
+    CODE_CORE_CAPABILITY_HIDDEN,
+    CODE_DISCLOSURE_BOUNDARY,
     CODE_CONFIRMATION_REQUIRED,
     CODE_CONFIRMATION_INVALIDATED,
     CODE_CONFIRMATION_REUSED,
@@ -109,9 +115,15 @@ KNOWN_CODES = (
 )
 
 WATERMARK = "DEMO / REPLAY - SYNTHETIC FIXTURE - NOT FOR MANUFACTURING"
+ENGINEERING_FLAGS = MappingProxyType({
+    "verified_truth": False,
+    "engineering_approval": False,
+    "can_enter_p2": False,
+    "production_approved": False,
+})
 
 DEFAULT_LIMITS = [
-    "DEMO / REPLAY only: two synthetic fixtures, not a CAD engine.",
+    "DEMO / REPLAY only: fixed synthetic fixtures, not a CAD engine.",
     "Not for manufacturing, production release, engineering approval or design verification.",
     "Readback checks declared fixture data, manifest fields and pre-generated demo media bytes; "
     "it does not measure a drawing or verify geometry.",
@@ -169,9 +181,7 @@ def make_envelope(*, command, entry, task_id, revision, input_digest,
         "data": data or {},
         "errors": list(errors or []),
         "manufacturing_release": False,
-        "engineering_approval": False,
-        "production_approved": False,
-        "verified_truth": False,
+        **ENGINEERING_FLAGS,
     }
 
 
@@ -199,8 +209,10 @@ def validate_envelope(envelope):
         problems.append("UNKNOWN_STATUS")
     if envelope.get("code") not in KNOWN_CODES:
         problems.append("UNKNOWN_CODE")
-    for flag in ("manufacturing_release", "engineering_approval",
-                 "production_approved", "verified_truth"):
+    flags = ("manufacturing_release", "engineering_approval", "production_approved", "verified_truth")
+    if "can_enter_p2" in envelope:
+        flags += ("can_enter_p2",)
+    for flag in flags:
         if envelope.get(flag) is not False:
             problems.append("%s_NOT_FALSE" % flag.upper())
     return problems

@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
-from .replay_engine import ReplayEngine, parse_dxf_text
+"""Public replay engine and compatibility names."""
 
-__all__ = ["ReplayEngine", "parse_dxf_text"]
+from .replay_engine import ReplayEngine, parse_dxf_text
+from .replay_stub import ReplayStubEngine
+
+__all__ = ["ReplayStubEngine", "ReplayEngine", "parse_dxf_text"]

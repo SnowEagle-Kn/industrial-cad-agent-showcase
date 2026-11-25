@@ -1,0 +1,38 @@
+{
+  "binding": {
+    "design_drawing_sha256": "618f471a0c9db1400efc90547c51b7138b591623730be870fd0597c305195c32",
+    "revision": 3,
+    "run_id": "SYNTHETIC-GATES",
+    "transfer_sha256": "22ba991496ad6bc94058e705e224d1d4d394371eca08c450a8b63ecbab928bf4"
+  },
+  "g1_items": [
+    {
+      "id": "outer_profile",
+      "provided": true,
+      "source": "synthetic input",
+      "value": "synthetic closed profile reference"
+    },
+    {
+      "id": "thickness",
+      "provided": true,
+      "source": "synthetic input",
+      "value": 3
+    },
+    {
+      "id": "mounting_holes",
+      "provided": true,
+      "source": "synthetic input",
+      "value": "synthetic opening locations"
+    },
+    {
+      "id": "inner_rings",
+      "provided": true,
+      "source": "synthetic input",
+      "value": "none"
+    }
+  ],
+  "request": {
+    "consent": true,
+    "user_event_ref": "saved-events.json#event:CONSENT-1"
+  }
+}

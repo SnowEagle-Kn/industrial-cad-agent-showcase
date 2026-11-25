@@ -1,5 +1,8 @@
 # Source Release Candidate Details
 
+The [showcase README](../README.md) describes the current v0.2.0 source.
+This document records the historical v0.1.0 preparation snapshot.
+
 ## Scope And Inputs
 
 `PUBLIC-SOURCE-RC-20261113` is an unpublished preparation label. Package

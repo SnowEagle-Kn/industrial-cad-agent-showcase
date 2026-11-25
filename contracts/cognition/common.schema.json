@@ -1,0 +1,413 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:wishcad:cognition:common:1",
+  "title": "Shared definitions for the cognition contracts",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "state": {
+      "enum": [
+        "USER_FACT",
+        "OBSERVED",
+        "ESTIMATED",
+        "DERIVED",
+        "ASSUMED",
+        "UNKNOWN",
+        "CONFLICT"
+      ]
+    },
+    "value_role": {
+      "enum": [
+        "EXISTING_FACT",
+        "DESIGN_CHOICE"
+      ]
+    },
+    "scalar": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      ]
+    },
+    "unit": {
+      "enum": [
+        "mm",
+        "deg",
+        "pixel",
+        "normalized",
+        "unitless",
+        null
+      ]
+    },
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![\\\\/])(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[\\\\:#\\x00-\\x1f]).+$"
+    },
+    "region": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "width": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "height": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "unit": {
+              "enum": [
+                "pixel",
+                "normalized",
+                "mm"
+              ]
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "unit"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "locator": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "user_event",
+            "text_lines",
+            "dxf_entity",
+            "pdf_page",
+            "image_region",
+            "derived_record"
+          ]
+        },
+        "token": {
+          "type": "string",
+          "minLength": 1
+        },
+        "view_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "region": {
+          "$ref": "urn:wishcad:cognition:common:1#/$defs/region"
+        }
+      },
+      "required": [
+        "kind",
+        "token",
+        "view_id",
+        "region"
+      ],
+      "additionalProperties": false
+    },
+    "source_ref": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "$ref": "urn:wishcad:cognition:common:1#/$defs/relative_path"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "locator": {
+          "$ref": "urn:wishcad:cognition:common:1#/$defs/locator"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "locator"
+      ],
+      "additionalProperties": false
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:wishcad:cognition:common:1#/$defs/source_ref"
+      },
+      "uniqueItems": true
+    },
+    "statement": {
+      "type": "object",
+      "properties": {
+        "requirement_id": {
+          "$ref": "urn:wishcad:cognition:common:1#/$defs/id"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_status": {
+          "$ref": "urn:wishcad:cognition:common:1#/$defs/state"
+        },
+        "source_refs": {
+          "$ref": "urn:wishcad:cognition:common:1#/$defs/source_refs"
+        }
+      },
+      "required": [
+        "requirement_id",
+        "text",
+        "evidence_status",
+        "source_refs"
+      ],
+      "additionalProperties": false
+    },
+    "slot": {
+      "type": "object",
+      "properties": {
+        "statements": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/statement"
+          }
+        },
+        "unresolved_question_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "statements",
+        "unresolved_question_ids"
+      ],
+      "additionalProperties": false
+    },
+    "transform": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "from_frame": {
+              "type": "string",
+              "minLength": 1
+            },
+            "to_frame": {
+              "type": "string",
+              "minLength": 1
+            },
+            "matrix": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 16,
+              "maxItems": 16
+            },
+            "unit": {
+              "enum": [
+                "mm",
+                "pixel",
+                "normalized",
+                "unitless"
+              ]
+            },
+            "basis_source_refs": {
+              "$ref": "urn:wishcad:cognition:common:1#/$defs/source_refs"
+            }
+          },
+          "required": [
+            "from_frame",
+            "to_frame",
+            "matrix",
+            "unit",
+            "basis_source_refs"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "cost": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "material",
+            "manufacturing",
+            "assembly",
+            "maintenance",
+            "performance",
+            "unknown"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "source_refs": {
+          "$ref": "urn:wishcad:cognition:common:1#/$defs/source_refs"
+        }
+      },
+      "required": [
+        "kind",
+        "description",
+        "value",
+        "unit",
+        "source_refs"
+      ],
+      "additionalProperties": false
+    },
+    "verification": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "minLength": 1
+        },
+        "criterion": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "source_refs": {
+          "$ref": "urn:wishcad:cognition:common:1#/$defs/source_refs"
+        }
+      },
+      "required": [
+        "method",
+        "criterion",
+        "source_refs"
+      ],
+      "additionalProperties": false
+    },
+    "view": {
+      "type": "object",
+      "properties": {
+        "view_id": {
+          "$ref": "urn:wishcad:cognition:common:1#/$defs/id"
+        },
+        "path": {
+          "$ref": "urn:wishcad:cognition:common:1#/$defs/relative_path"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "frame_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "view_id",
+        "path",
+        "sha256",
+        "frame_id"
+      ],
+      "additionalProperties": false
+    },
+    "layout": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "layout_ref": {
+              "$ref": "urn:wishcad:cognition:common:1#/$defs/relative_path"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "frame_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "unit": {
+              "enum": [
+                "mm",
+                "pixel",
+                "normalized"
+              ]
+            },
+            "view_refs": {
+              "type": "array",
+              "items": {
+                "$ref": "urn:wishcad:cognition:common:1#/$defs/view"
+              },
+              "minItems": 1
+            },
+            "source_refs": {
+              "$ref": "urn:wishcad:cognition:common:1#/$defs/source_refs"
+            }
+          },
+          "required": [
+            "layout_ref",
+            "sha256",
+            "frame_id",
+            "unit",
+            "view_refs",
+            "source_refs"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

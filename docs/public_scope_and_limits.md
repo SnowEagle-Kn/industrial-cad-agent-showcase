@@ -1,10 +1,11 @@
 # Public scope and limits
 
-Industrial CAD Agent Showcase includes a full local CAD project and a
-separately distributed public replay package. The public `v0.1.0` package
-demonstrates a two-entry workflow in **DEMO / REPLAY** mode. It consumes fixed
-synthetic inputs and copies existing pre-generated preview images. Its commands
-call no live LLM or private CAD backend and generate no new STEP / DXF / PDF.
+Industrial CAD Agent Showcase exposes the governance modules, contracts and
+workflow orchestration of a larger CAD project. The public `v0.2.0` source
+candidate runs deterministic governance and replays fixed synthetic inputs.
+See the [current architecture](architecture.md) and the [seven-method public
+boundary](private_engine_boundary.md). The v0.1.0 release details below identify
+the historical replay baseline.
 
 ## Full local project
 
@@ -29,7 +30,8 @@ are outside the public runnable package.
   simulated confirmation event schemas.
 - Two synthetic fixture groups, including their declared allowed digests.
 - Existing DEMO SVG and PNG media produced with the Python standard library.
-- The 26-test standard-library suite and source documentation.
+- Standard-library tests and source documentation, including the 25-state
+  model, blind handoff, 128-vertex scoring and the release disclosure boundary.
 
 "Public candidate" is the historical name of this admitted source boundary.
 Current mode is
@@ -42,17 +44,15 @@ See the current terms in the historically named
 ## Outside the public runnable package
 
 - The real industrial CAD engine, OCP and real STEP / DXF / PDF processing.
-- Complete private rules, feature registries, geometric checks, full prompt
-  text, scoring details, internal contracts and whitelists.
+- Complete private rules, feature registries, geometric checks, full private
+  prompts, industrial validation contracts and internal allowlists.
 - Real drawings, photos, machine data, customer data and project logs.
 - Host session IDs, receipts, personal paths, credentials and deployment data.
 
-The drawing entry contains only the public synthetic DXF subset inspector. It
-recognizes LINE, CIRCLE and TEXT in that fixture and reports unknown SPLINE
-objects. This public inspector is separate from the local project's real CAD
-processing chain. Presentation documents and safe synthetic drawing screenshots
-describe that local work without distributing its private engine or making the
-replay commands execute it.
+The drawing entry identifies the admitted synthetic DXF before returning
+fixed public results. The prior release's fixture evidence includes LINE,
+CIRCLE and TEXT, with unsupported SPLINE recorded as unknown. Synthetic
+drawing screenshots in the presentation describe bounded development work.
 
 ## Source-first demonstration
 
@@ -116,10 +116,5 @@ drawing support, geometric accuracy, authentic user confirmation, engineering
 approval, production readiness or manufacturing release. They cannot substitute
 for private-engine tests or acceptance records.
 
-The source-display mode follows delegated decision
-`CAD-PUBLIC-CLOSEOUT-20261113-R0-r1`, D02; it does not establish legal ownership
-or technical release acceptance. Exact-object review, CI and remote validation
-are revision-specific and must be checked in the records for the exact
-presentation commit. This document does not itself certify review, CI or
-remote validation; the historical release and its CI do not certify a new
-documentation commit.
+The project owner retained the source-display terms for v0.2.0. The technical
+review, CI and deployment records bind to the exact reviewed Git commit.

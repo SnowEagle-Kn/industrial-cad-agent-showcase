@@ -1,1 +1,5 @@
 fixtures/drawing_to_deliverable/*.dxf text eol=lf
+fixtures/**/*.json text eol=lf
+examples/**/*.svg text eol=lf
+fixtures/delivery/booklet.pdf binary
+docs/showcase/index.html text eol=lf

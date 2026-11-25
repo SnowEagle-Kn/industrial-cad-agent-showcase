@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cad-agent-showcase"
-version = "0.1.0"
-description = "Two-entry industrial CAD agent workflow demo (DEMO/REPLAY only)"
+version = "0.2.0"
+description = "Source showcase for industrial CAD agent governance and fixed-fixture replay"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []

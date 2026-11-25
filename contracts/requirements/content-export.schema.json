@@ -1,0 +1,85 @@
+{
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "wishcad.content-export.v1"
+    },
+    "binding": {
+      "type": "object",
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "brief_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_manifest_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "requirements_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rules_revision": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "task_id",
+        "run_id",
+        "revision",
+        "brief_sha256",
+        "source_manifest_sha256",
+        "requirements_revision",
+        "rules_revision"
+      ],
+      "additionalProperties": false
+    },
+    "stage": {
+      "enum": [
+        "PRESELECTION",
+        "POSTSELECTION"
+      ]
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "record_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "anonymous_mapping_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "schema",
+    "binding",
+    "stage",
+    "candidate_id",
+    "candidate_sha256",
+    "record_sha256",
+    "anonymous_mapping_sha256"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:wishcad:c01-r2:content-export.schema.json"
+}

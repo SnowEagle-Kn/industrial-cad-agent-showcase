@@ -7,7 +7,7 @@ the manifest itself repeats the watermark and the false engineering flags.
 
 import os
 
-from .contracts import (DEFAULT_LIMITS, EVIDENCE_REPLAY, MANIFEST_SCHEMA,
+from .contracts import (DEFAULT_LIMITS, ENGINEERING_FLAGS, EVIDENCE_REPLAY, MANIFEST_SCHEMA,
                         MODE_REPLAY, WATERMARK)
 from .util import file_sha256, write_json
 
@@ -131,9 +131,7 @@ def write_delivery(out_dir, *, command, task_id, entry, revision, fixture_id,
         "readback": readback,
         "limits": limits,
         "manufacturing_release": False,
-        "engineering_approval": False,
-        "production_approved": False,
-        "verified_truth": False,
+        **ENGINEERING_FLAGS,
     }
     write_json(os.path.join(out_dir, "manifest.json"), manifest)
     return manifest, file_sha256(os.path.join(out_dir, "manifest.json"))

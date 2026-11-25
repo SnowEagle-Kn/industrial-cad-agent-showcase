@@ -1,0 +1,312 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:wishcad:candidate-cognition:1.1",
+  "title": "Closed projection of declared cognition paths; base candidate validation also required",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "wishcad.candidate.v1.1"
+    },
+    "consumed_feature_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "decision_records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "decision_id": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/id"
+          },
+          "decision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "requirement_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "feature_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "source_refs": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/source_refs"
+          },
+          "mechanism": {
+            "type": "string",
+            "minLength": 1
+          },
+          "costs": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:wishcad:cognition:common:1#/$defs/cost"
+            }
+          },
+          "failure_conditions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "verification": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/verification"
+          }
+        },
+        "required": [
+          "decision_id",
+          "decision",
+          "requirement_ids",
+          "feature_ids",
+          "source_refs",
+          "mechanism",
+          "costs",
+          "failure_conditions",
+          "verification"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "critical_unknowns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "feature_id": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/id"
+          },
+          "question": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dependency_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "evidence_status": {
+            "enum": [
+              "UNKNOWN",
+              "CONFLICT",
+              "ASSUMED",
+              "ESTIMATED"
+            ]
+          },
+          "source_refs": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/source_refs"
+          },
+          "exit_effect": {
+            "type": "object",
+            "properties": {
+              "impact": {
+                "type": "string",
+                "minLength": 1
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1
+              },
+              "responsibility": {
+                "type": "string",
+                "minLength": 1
+              },
+              "owner": {
+                "enum": [
+                  "P",
+                  "D",
+                  "J0",
+                  "user"
+                ]
+              }
+            },
+            "required": [
+              "impact",
+              "action",
+              "responsibility",
+              "owner"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "feature_id",
+          "question",
+          "dependency_ids",
+          "evidence_status",
+          "source_refs"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "capability_assessment": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "wishcad.capability-assessment.v1"
+        },
+        "target_part": {
+          "type": "string",
+          "minLength": 1
+        },
+        "render_check": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "NOT_RUN"
+              ]
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "additionalProperties": false
+        },
+        "construction_precheck": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "PRECHECK_MATCH",
+                "PRECHECK_GAP",
+                "NOT_RUN"
+              ]
+            },
+            "fields_checked": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "operations",
+                  "max_extent",
+                  "thickness_min",
+                  "thickness_max",
+                  "max_drawable_extent",
+                  "max_drawable_thickness",
+                  "drawing_sheet_selection"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "gaps": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "status",
+            "fields_checked",
+            "gaps"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "PRECHECK_GAP"
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "gaps": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          ],
+          "additionalProperties": false
+        },
+        "scenario_qualification": {
+          "type": "object",
+          "properties": {
+            "tier": {
+              "enum": [
+                "HARD_GATE_FAIL",
+                "INPUT_PENDING",
+                "PARTIAL_CAPABILITY",
+                "COMPARABLE_READY"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "tier",
+            "reason"
+          ],
+          "additionalProperties": false
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "schema",
+        "target_part",
+        "render_check",
+        "construction_precheck",
+        "scenario_qualification"
+      ],
+      "additionalProperties": false
+    },
+    "evidence_refs": {
+      "type": "object",
+      "properties": {
+        "layout": {
+          "$ref": "urn:wishcad:cognition:common:1#/$defs/layout"
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:wishcad:cognition:common:1#/$defs/source_ref"
+          }
+        }
+      },
+      "required": [
+        "layout",
+        "artifacts"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema",
+    "consumed_feature_ids",
+    "decision_records",
+    "critical_unknowns",
+    "evidence_refs"
+  ],
+  "additionalProperties": false
+}
